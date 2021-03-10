@@ -1,8 +1,31 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: Fred
+ * @email: fenglee9794@gmail.com
+ * @Date: 2021-03-10 14:50:11
+ * @LastEditors: Fred
+ * @LastEditTime: 2021-03-10 19:30:47
+ */
 import Vue from 'vue'
+
 import App from './App.vue'
-import router from './router'
-import store from './store'
+
+import router from '@/router/router'
+
+import store from '@/store/store'
+
+import ElementUI from 'element-ui'
+
+import 'element-ui/lib/theme-chalk/index.css'
+
 import './registerServiceWorker'
+
+import  '@/style/reset.scss'
+
+import '@/style/btn.scss'
+
+Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 

@@ -1,0 +1,110 @@
+html,
+body,
+P,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+dl,
+ul,
+ol,
+li,
+dd,
+dt,
+form,
+tbody,
+tfoot,
+thead {
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  /* width:100%; */
+  height: 100%;
+  // overflow: hidden;
+  /* font-size: 26.6vw; */
+  background: #E6EBF0;
+  font-family: AlibabaPuHuiTi, AlibabaPuHuiTi-Regular;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+th {
+  font-size: 16px;
+  font-weight: normal;
+}
+
+b,
+strong {
+  font-weight: normal;
+}
+
+i,
+em {
+  font-style: normal;
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+* {
+  scrollbar-color: #e5e5e5 #f7f7f9; /* 滑块颜色  滚动条背景颜色 */
+  scrollbar-width: thin; /* 滚动条宽度有三种：thin、auto、none */
+  &::-webkit-scrollbar {
+    background: #f7f7f9;
+    width: 6px;  /* 纵向滚动条滑块宽度 */
+    height: 6px; /* 横向滚动条滑块宽度 */
+  }
+  &::-webkit-scrollbar-track-piece { /*滚动条背景颜色*/
+    background: #f7f7f9;
+  }
+  &::-webkit-scrollbar-thumb { /* 滑块 */
+    border-radius: 3px;
+    background: #e5e5e5;
+  }
+  // 鼠标放上去滚动条颜色
+  &::-webkit-scrollbar-thumb:hover {
+    background: #30BF94;
+  }
+}
+/*通用父子盒子嵌套浮动问题解决，开始*/
+.clearfix:after {
+	content: "";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+.fl {
+  float: left;
+}
+.fr {
+  float: right;
+}
+
+.cb::after {
+  content: ".";
+  display: block;
+  clear: both;
+  overflow: hidden;
+  visibility: hidden;
+  height: 0;
+}
+
+button{
+  border: none;
+  outline: none;
+}
