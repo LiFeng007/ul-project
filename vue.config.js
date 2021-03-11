@@ -5,15 +5,29 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-01-28 10:53:53
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-10 20:31:18
+ * @LastEditTime: 2021-03-11 21:33:43
  */
 const path = require("path")
 
 const isProduction = process.env.NODE_ENV === 'production'
 
+// const px2rem = require('postcss-px2rem')
+
+// // 配置基本大小
+// const postcss = px2rem({
+//   remUnit: 128
+// })
+
+const px2rem = require('postcss-px2rem')
+
+const postcss = px2rem({
+  remUnit: 100 // 基准值
+})
+
 function resolve(dir) {
   return path.join(__dirname, dir);
 }
+
 module.exports = {
   chainWebpack: config => {
     config.resolve.alias
@@ -44,15 +58,6 @@ module.exports = {
       // }]).end();
     }
   },
-    // 配置一些全局变量
-    pluginOptions: {
-      'style-resources-loader': {
-        'preProcessor': 'sass',
-        'patterns': [
-          path.resolve(__dirname, './src/style/btn.scss'),
-        ]
-      }
-    } , 
   configureWebpack: {
     // 分片打包时将包与包之间相互引入的code单独打包
     optimization: {
@@ -63,8 +68,23 @@ module.exports = {
         name: entrypoint => `runtime-${entrypoint.name}`
       }
     },
-
   },
+  pwa: {
+    iconPaths: {
+      favicon32     : 'favicon.ico',
+      favicon16     : 'favicon.ico',
+      appleTouchIcon: 'favicon.ico',
+      maskIcon      : 'favicon.ico',
+      msTileImage   : 'favicon.ico'
+   } 
+  } , 
+//   css: {
+//     loaderOptions: {
+//         postcss: {
+//             plugins: [postcss]
+//         }
+//     },
+// },
   productionSourceMap: false,//打包时不要map文件
   devServer: {
     overlay: {
@@ -72,5 +92,5 @@ module.exports = {
       errors: false,
     },
   },
-  lintOnSave: false,
+  lintOnSave: true,
 }

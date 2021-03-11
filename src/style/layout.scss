@@ -1,0 +1,88 @@
+.ul-nav {
+
+  nav {
+    display: flex;
+    background: url('../assets/image/header_back.png');
+    align-items: center;
+    height: 0.48rem;
+    position: relative;
+
+    /**/
+    .ul-nav-logo {
+      display: flex;
+      align-items: center;
+
+      .logo {
+        width: 0.29rem;
+        height: 0.33rem;
+        margin: 0 0.21rem 0 0.18rem;
+      }
+
+      .u {
+        width: 0.96rem;
+        height: 0.19rem;
+      }
+    }
+
+    /**/
+    .ul-nav-link {
+      display: flex;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      overflow: hidden;
+
+      div {
+        opacity: 0.8;
+        font-size: 0.14rem;
+        font-family: PingFangSC, PingFangSC-Regular;
+        font-weight: 400;
+        text-align: center;
+        color: #ffffff;
+        margin-right: 0.24rem;
+        padding-bottom: 0.05rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .router-link-active {
+        font-family: PingFangSC, PingFangSC-Medium;
+        font-weight: 500;
+        border-bottom: 2px solid #ffffff;
+        border-bottom-left-radius: 1px;
+        border-bottom-right-radius: 1px;
+      }
+    }
+
+    /**/
+    .ul-nav-user {
+      margin-left: auto;
+      margin-right: 0.24rem;
+
+      img {
+        width: 0.24rem;
+        height: 0.24rem;
+      }
+    }
+  }
+}
+
+.ul-crumbs {
+  display: flex;
+  align-items: center;
+  height: 0.42rem;
+  padding-left: 0.18rem;
+  opacity: 1;
+  background: #ffffff;
+  box-shadow: 0px 0px 3px 0px rgba(16, 58, 95, 0.20);
+
+  .graying , .iconfont , .placeholder{
+    color: gray;
+    font-size: 0.14rem;
+  }
+  .text{
+    margin: 0 0.04rem;
+    font-size: 0.14rem;
+  }
+}

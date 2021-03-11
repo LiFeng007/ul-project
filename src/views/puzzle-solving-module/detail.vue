@@ -3,21 +3,18 @@
  * @version: 
  * @Author: Fred
  * @email: fenglee9794@gmail.com
- * @Date: 2021-03-10 22:59:14
+ * @Date: 2021-03-11 10:40:04
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-11 22:53:04
+ * @LastEditTime: 2021-03-11 17:44:41
 -->
 <template>
-  <div class="ul-course-to-examine">
+  <div>
     <!-- ** -->
-    <div class="ul-main-com">
-      <Ul-nav @getData="getData"> 
+    <Ul-nav @getData="getData"> 
         <template v-slot:left>
-         课程名称：A课程     课程积分：10分
+         文件名称：积分导入文件1      员工数量：5
         </template>
     </Ul-nav>
-    </div>
-    
   </div>
 </template>
 
@@ -26,9 +23,13 @@
 import UlNav from '@/components/nav'
 
 export default {
-  name:'course-to-examine' ,
+  name:'puzzle-solving-detail' , 
 
   components:{UlNav} , 
+
+  mounted() {
+      this.$route.meta.crmuns = [{ item: '解惑模块' , to:'puzzle-solving-module' } ,  {item:this.$route.query.puzzleSolvingId}]
+  },
 
   methods: {
     getData:function(e){

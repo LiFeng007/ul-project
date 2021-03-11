@@ -13,6 +13,16 @@
   }
 }
 
+.routine-btn{
+  @include colorBtn($routine);
+  padding: 0 0.24rem;
+  height: 0.32rem;
+  background: #003fad;
+  border-radius: 2px;
+  font-size: 0.13rem;
+  font-weight: 400;
+  color: #ffffff;
+}
 .blue-btn {
   @include colorBtn($blue)
 }
@@ -87,13 +97,13 @@
   white-space: nowrap;
   cursor: pointer;
   background: #fff;
-  color: #fff;
+  color: black;
   -webkit-appearance: none;
   text-align: center;
   box-sizing: border-box;
   outline: 0;
   margin: 0;
-  padding: 10px 15px;
-  font-size: 14px;
-  border-radius: 4px;
+  padding: 0.10rem 0.15rem;
+  font-size: 0.14rem;
+  border-radius: 0.04rem;
 }

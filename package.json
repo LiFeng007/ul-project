@@ -10,6 +10,9 @@
   "dependencies": {
     "core-js": "^2.6.5",
     "element-ui": "^2.15.1",
+    "postcss-px2rem": "^0.3.0",
+    "postcss-pxtorem": "^6.0.0",
+    "px2rem-loader": "^0.1.9",
     "register-service-worker": "^1.6.2",
     "style-resources-loader": "^1.4.1",
     "vue": "^2.6.10",
