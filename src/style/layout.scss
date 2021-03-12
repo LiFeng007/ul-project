@@ -4,7 +4,7 @@
     display: flex;
     background: url('../assets/image/header_back.png');
     align-items: center;
-    height: 0.48rem;
+    height: 48px;
     position: relative;
 
     /**/
@@ -71,7 +71,7 @@
 .ul-crumbs {
   display: flex;
   align-items: center;
-  height: 0.42rem;
+  height: 42px;
   padding-left: 0.18rem;
   opacity: 1;
   background: #ffffff;
@@ -79,7 +79,7 @@
 
   .graying , .iconfont , .placeholder{
     color: gray;
-    font-size: 0.14rem;
+    font-size: 14px;
   }
   .text{
     margin: 0 0.04rem;

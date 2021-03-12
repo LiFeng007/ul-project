@@ -1,3 +1,5 @@
+@import './variables.scss';
+
 html,
 body,
 P,
@@ -41,7 +43,7 @@ h6,
 th , 
 span , 
 div {
-  font-size: 0.12rem;
+  font-size: 12px;
   font-weight: normal;
 }
 
@@ -79,7 +81,7 @@ a {
   }
   // 鼠标放上去滚动条颜色
   &::-webkit-scrollbar-thumb:hover {
-    background: #30BF94;
+    background: $routine;
   }
 }
 /*通用父子盒子嵌套浮动问题解决，开始*/

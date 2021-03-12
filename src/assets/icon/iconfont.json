@@ -13,11 +13,32 @@
       "unicode_decimal": 58901
     },
     {
+      "icon_id": "891275",
+      "name": "删除",
+      "font_class": "shanchu",
+      "unicode": "e6f0",
+      "unicode_decimal": 59120
+    },
+    {
+      "icon_id": "1474435",
+      "name": "删除",
+      "font_class": "shachu-xue",
+      "unicode": "e638",
+      "unicode_decimal": 58936
+    },
+    {
       "icon_id": "9425533",
       "name": "用户",
       "font_class": "yonghu",
       "unicode": "e647",
       "unicode_decimal": 58951
+    },
+    {
+      "icon_id": "9976601",
+      "name": "文件上传",
+      "font_class": "21upload",
+      "unicode": "e69c",
+      "unicode_decimal": 59036
     }
   ]
 }

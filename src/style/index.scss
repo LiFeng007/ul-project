@@ -8,14 +8,26 @@
 @import'./layout.scss';
 
 /* table表格样式 */
- .ul-main-com{
-   padding: 0.16rem;
+.ul-main-com {
+  padding: 0.16rem;
 
-   .el-table {
-     padding: 0 0.16rem;
+  .el-table {
+    padding: 0 0.16rem;
 
-     th{
+    th {
       background: #fafafa;
-     }
-   }
- }
+      font-weight: 500;
+      color: #35393f;
+
+      .gutter {
+        display: table-cell !important;
+      }
+    }
+
+
+    .cursor-porinter {
+      font-weight: 400;
+      color: #003fad;
+    }
+  }
+}

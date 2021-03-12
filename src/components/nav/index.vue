@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-11 16:17:29
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-11 23:04:52
+ * @LastEditTime: 2021-03-12 14:18:27
 -->
 <template>
   <div class="ul-nav-com">
@@ -40,10 +40,11 @@ export default {
 
 <style lang='scss' >
   .ul-nav-com{
-    height:0.72rem;
+    height:72px;
     padding: 0 0.016rem;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
     align-items: center;
     background: #ffffff;
     border-radius:2px 2px 0 0 ;

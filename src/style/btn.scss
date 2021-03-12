@@ -6,6 +6,7 @@
   &:hover {
     color: white;
     transition: all .5s;
+
     &:before,
     &:after {
       background: $color;
@@ -13,16 +14,24 @@
   }
 }
 
-.routine-btn{
+.routine-btn {
   @include colorBtn($routine);
   padding: 0 0.24rem;
-  height: 0.32rem;
-  background: #003fad;
+  height: 32px;
   border-radius: 2px;
-  font-size: 0.13rem;
+  font-size: 13px;
   font-weight: 400;
   color: #ffffff;
 }
+
+.default-btn {
+  padding: 0 0.24rem;
+  height: 32px;
+  background: #ffffff;
+  border: 1px solid #e2e6e9;
+  border-radius: 3px;
+}
+
 .blue-btn {
   @include colorBtn($blue)
 }
