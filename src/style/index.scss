@@ -29,5 +29,16 @@
       font-weight: 400;
       color: #003fad;
     }
+    .el-image , img{
+      width: 24px !important;
+      height: 52px !important;
+    }
+  }
+}
+.ul-course-to-examine{
+  .ul-main-com{
+    td {
+      padding: 6px;
+    }
   }
 }

@@ -41,7 +41,9 @@
     }
   }
 }
-
+.el-image-viewer__btn .el-image-viewer__actions{
+  display: none;
+}
 // font-size
 .el-input,
 .el-input__inner,

@@ -6,7 +6,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-12 14:04:31
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-12 23:11:20
+ * @LastEditTime: 2021-03-13 21:11:46
 -->
 <template>
   <div class="ul-upload">
@@ -17,22 +17,19 @@
             <div><i :style="{ color: '#F25B8E' }">*</i> 文件:</div>
             <el-button size="small" icon="el-icon-upload" v-if="!fileList.length">点击上传</el-button>
           </div>
-          <p v-if="uploadTips.type === 'error' || uploadTips.type === 'success'" :style="{
+          <p :style="{
               color: uploadTips.type === 'error' ? '#F25B8E' : ' ',
               color:  uploadTips.type === 'success' || uploadTips.type === 'partialSuccess' ? '#003FAD': '',}" :class="['uploadTips']">
             {{ uploadTips.message }}
           </p>
-         
+
         </el-upload>
-         <el-table v-if="uploadTips.type === 'partialSuccess'" :data="gridData">
 
-            <el-table-column property="date" label="日期" width="150"></el-table-column>
-
-            <el-table-column property="name" label="姓名" width="200"></el-table-column>
-
-            <el-table-column property="address" label="地址"></el-table-column>
-
+        <div class="ul-upload-errinfo-table" v-if="uploadTips.type === 'partialSuccess'">
+          <el-table :data="uploadTips.tableData" :height="250">
+            <el-table-column v-for="(item , index) in uploadTips.tableHeader" :key="index" :prop="item.prop ? item.prop : false" :label="item.col" :min-width="item.minWidth ? item.minWidth : 80"></el-table-column>
           </el-table>
+        </div>
       </div>
       <span slot="footer" class="dialog-footer">
         <button :class="['default-btn']" @click="uploadVisible.state = false">
@@ -72,28 +69,6 @@
     data() {
       return {
         fileList: [],
-        gridData: [
-          {
-            date: "2016-05-02",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1518 弄",
-          },
-          {
-            date: "2016-05-04",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1518 弄",
-          },
-          {
-            date: "2016-05-01",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1518 弄",
-          },
-          {
-            date: "2016-05-03",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1518 弄",
-          },
-        ],
       };
     },
 
@@ -234,6 +209,25 @@
             font-size: 18px;
             margin-right: 8px;
           }
+        }
+      }
+      .ul-upload-errinfo-table {
+        padding: 24px 24px 0 24px;
+        .el-table {
+          border: 1px solid #e2e8ed;
+          border-radius: 2px;
+
+          .el-table__header th {
+            font-weight: 600;
+            color: black;
+            border-bottom-width: 2px;
+          }
+        }
+        th,
+        td,
+        tr {
+          height: 25px;
+          padding: 0;
         }
       }
     }
