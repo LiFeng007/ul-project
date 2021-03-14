@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-11 14:31:02
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-11 22:31:30
+ * @LastEditTime: 2021-03-14 20:57:18
 -->
 <template>
   <div class="ul-crumbs">
@@ -44,5 +44,11 @@
 <script>
   export default {
     name: "ul-crmuns",
+    data() {
+      const meta = this.$route.meta
+      return {
+        meta,
+      }
+    },
   };
 </script>

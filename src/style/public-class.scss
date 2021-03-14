@@ -1,3 +1,55 @@
-.cursor-porinter{
+.cursor-porinter {
   cursor: pointer;
+}
+
+.completed {
+  &:before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    opacity: 1;
+    background: #003fad;
+    border-radius: 50%;
+    margin-right: 4px;
+  }
+}
+
+.toBeUploaded {
+  &:before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    opacity: 1;
+    background: #ff9800;
+    border-radius: 50%;
+    margin-right: 4px;
+  }
+}
+
+.rejected {
+  &:before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    opacity: 1;
+    background: #f25b8e;
+    border-radius: 50%;
+    margin-right: 4px;
+  }
+}
+
+.success {
+  &:before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    opacity: 1;
+    background: #66b54e;
+    border-radius: 50%;
+    margin-right: 4px;
+  }
 }

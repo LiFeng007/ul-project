@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:26:46
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-13 22:12:02
+ * @LastEditTime: 2021-03-14 17:11:07
 -->
 <template>
   <div class="ul-course-management">
@@ -73,7 +73,7 @@
     <!-- ** -->
     <Ul-Confirm :confrimVisible="confrimVisible" :message="confirmMssage" @submit="confrimSubmit" />
     <!-- ** -->
-    <Ul-Upload :uploadVisible="uploadVisible" :uploadTips="uploadTips" @upload="upload" />
+    <Ul-Upload title="课程上传" :uploadVisible="uploadVisible" :uploadTips="uploadTips" @upload="upload" />
   </div>
 </template>
 

@@ -1,16 +1,19 @@
 <!--
- * @Descripttion: 确认框组件 , props : uploadVisible:{state:Boolean}  
+ * @Descripttion: 确认框组件 , 
+                  props : uploadVisible:{state:Boolean}  
+                          uploadTips:{object} 提示信息对象
+                          title : string 标题
                   自定义方法 upload 用户点击上传执行的方法
  * @version: 
  * @Author: Fred
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-12 14:04:31
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-13 21:11:46
+ * @LastEditTime: 2021-03-14 17:12:45
 -->
 <template>
   <div class="ul-upload">
-    <el-dialog :visible.sync="uploadVisible.state" title="课程上传">
+    <el-dialog :visible.sync="uploadVisible.state" :title="title">
       <div class="ul-upload-main">
         <el-upload ref="uploadMutiple" class="upload-demo" :auto-upload="false" action="Fake Action" :on-preview="handlePreview" :on-remove="handleRemove" :on-change="handleChange" :limit="1" accept=".xlsx,.xls" :on-exceed="handleExceed" :file-list="fileList" multiple>
           <div>
@@ -53,6 +56,11 @@
         type: Object,
         required: true,
       },
+      title:{
+        // 标题
+        type:String ,
+        required:true
+      } , 
       uploadTips: {
         /**
          * {Object}
