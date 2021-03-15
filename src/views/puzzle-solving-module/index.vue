@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:28:38
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-14 20:27:54
+ * @LastEditTime: 2021-03-15 17:02:44
 -->
 <template>
   <div class="ul-puzzle-solving">
@@ -15,6 +15,7 @@
       <Ul-nav @getData="getData">
         <template v-slot:left>
           <button class="routine-btn" @click="() => uploadVisible.state = true">积分导入</button>
+          <span class="cursor-porinter" @click="templateDown">下载模板</span>
         </template>
       </Ul-nav>
       <!-- ** -->
@@ -137,6 +138,12 @@
         this.confrimVisible.state = true;
       },
       /**
+       * 模板下载
+       * */ 
+      templateDown(){
+        console.log('模板下载')
+      } , 
+      /**
        * 确定上传
        * **/
       upload: function (file) {
@@ -147,16 +154,16 @@
           type: "partialSuccess",
           message: "导入成功28条,失败5条,失败信息如下",
           tableHeader: [
-            { col: "微信ID", prop: "wechatId", minWidth: 200, isTips: true },
+            { col: "邮箱", prop: "email", minWidth: 200, isTips: true },
             { col: "员工姓名", prop: "staff", minWidth: 120, isTips: true },
             { col: "获得积分", prop: "integral" },
           ],
           tableData: [
-            { wechatId: "23790we7whud", staff: "张三", integral: "20" },
-            { wechatId: "sdajkldhfkdhl", staff: "李四", integral: "200" },
-            { wechatId: "fnkdhkklfhdl", staff: "法外光秃", integral: "200" },
-            { wechatId: "fjkdkdfhdl", staff: "法外狂徒", integral: "200" },
-            { wechatId: "afen", staff: "葬爱", integral: "200" },
+            { email: "23790we7whud@unilever.com", staff: "张三", integral: "20" },
+            { email: "sdajkldhfkdhl@unilever.com", staff: "李四", integral: "200" },
+            { email: "fnkdhkklfhdl@unilever.com", staff: "法外光秃", integral: "200" },
+            { email: "fjkdkdfhdl@unilever.com", staff: "法外狂徒", integral: "200" },
+            { email: "afen@unilever.com", staff: "葬爱", integral: "200" },
           ],
         };
       },

@@ -11,6 +11,17 @@
 .ul-main-com {
   padding: 0.16rem;
 
+  .ul-nav-left span {
+    text-decoration: underline;
+    margin-left: 12px;
+    -moz-user-select: none;
+    -o-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
   .el-table {
     padding: 0 0.16rem;
 
@@ -35,6 +46,11 @@
       width: 24px !important;
       height: 52px !important;
     }
+
+    .heade-prot {
+      width: 30px !important;
+      height: 30px !important;
+    }
   }
 }
 
@@ -46,18 +62,20 @@
   }
 }
 
-// 课程详情
-.ul-course-detail-com {
+// 详情页面
+.ul-course-detail-com,
+.ul-peoject-detail-com,
+.ul-staff-detail-com {
   height: calc(100% - 110px);
   padding: 0.16rem 0.16rem 0 0.16rem;
 
-  .course-detail {
+  .detail {
     background-color: #fff;
     height: 90%;
     padding: 0.24rem 0.24rem 0 0.24rem;
     overflow-y: auto;
 
-    .course-detail-nav {
+    .detail-nav {
       height: 24px;
       line-height: 24px;
       padding-left: 0.12rem;
@@ -68,19 +86,61 @@
       color: #67717a;
     }
 
-    .course-detail-main {
+    .detail-main {
       margin-top: 36px;
       margin-left: 20%;
 
-  
       li {
         margin-bottom: 0.24rem;
         display: flex;
         flex-wrap: nowrap;
+
+        /*两栏*/
+        ul {
+          display: flex;
+          flex-wrap: wrap;
+
+          li {
+            width: 3rem;
+            flex-wrap: nowrap;
+
+            .screenshot {
+              width: 0.9rem;
+              height: 0.8rem;
+              background-color: gray;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 50%;
+              overflow: hidden;
+
+              &>span {
+                display: inline-block;
+                width: 0.79rem;
+                height: 0.72rem;
+                // border-radius: 50%;
+                margin-left: 0;
+              }
+
+              img {
+                width: 100%;
+                height: 100%;
+                // clip-path: circle(50%);
+              }
+            }
+
+            .content {
+              margin-left: 8px;
+            }
+            .header{
+              min-width:164px ;
+            }
+          }
+        }
       }
 
       .header {
-        width: 104px;
+        min-width: 72px;
         font-size: 12px;
         font-weight: 400;
         text-align: right;
@@ -94,9 +154,14 @@
         text-align: left;
         color: #67717a;
         display: inline-block;
-        word-wrap:break-word;
-        width: 50%;
+        word-wrap: break-word;
       }
     }
+  }
+}
+
+.ul-staff-detail-com{
+  .detail-main{
+    margin-left: 15% !important;
   }
 }

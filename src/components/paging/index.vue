@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-11 23:30:35
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-12 16:06:30
+ * @LastEditTime: 2021-03-15 19:45:30
 -->
 <template>
   <div class="ul-page">
@@ -17,7 +17,7 @@
         small
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage"
+        :current-page="pageNumber"
         :page-sizes="[10, 20, 30, 50, 100]"
         :page-size="10"
         layout="sizes, prev, pager, next, jumper"
@@ -41,7 +41,7 @@
 
     data() {
       return {
-        currentPage: 1,
+        pageNumber: 1,
         limit: 10,
         currentStart: "",
         currentEnd: "",
@@ -53,15 +53,15 @@
         this.limit = val;
       },
       handleCurrentChange(val) {
-        this.currentPage = val;
+        this.pageNumber = val;
         this.$emit("getData", null, this.baseInfo);
       },
     },
 
     computed: {
       baseInfo() {
-        const { limit, currentPage, total } = this;
-        return { limit, currentPage, total };
+        const { limit, pageNumber, total } = this;
+        return { limit, pageNumber, total };
       },
     },
 
@@ -69,20 +69,20 @@
       baseInfo: {
         handler(newVal, oldVal) {
           if (oldVal) {
-            if (newVal.limit !== oldVal.limit && oldVal.currentPage === 1)
+            if (newVal.limit !== oldVal.limit && oldVal.pageNumber === 1)
               this.$emit("getData", null, newVal);
           }
           // 当前页开始条
-          this.currentStart = (newVal.currentPage - 1) * newVal.limit + 1;
+          this.currentStart = (newVal.pageNumber - 1) * newVal.limit + 1;
           //  当前页结束条
-          this.currentEnd = newVal.currentPage * newVal.limit;
+          this.currentEnd = newVal.pageNumber * newVal.limit;
           //  是否最后一页
           if (
-            Math.ceil(this.total / newVal.limit) === newVal.currentPage &&
+            Math.ceil(this.total / newVal.limit) === newVal.pageNumber &&
             this.total % newVal.limit != 0
           ) {
             let endPage = this.total % newVal.limit;
-            this.currentEnd = (newVal.currentPage - 1) * newVal.limit + endPage;
+            this.currentEnd = (newVal.pageNumber - 1) * newVal.limit + endPage;
           }
         },
         deep: true,

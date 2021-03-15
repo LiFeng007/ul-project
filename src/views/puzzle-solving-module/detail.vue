@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-11 10:40:04
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-14 21:08:28
+ * @LastEditTime: 2021-03-15 17:21:43
 -->
 <template>
   <div class="puzzle-solving-detail">
@@ -27,21 +27,26 @@
         </el-table-column>
 
         <el-table-column prop="staffName" label="员工姓名" min-width="100">
+           <template slot-scope="scope">
+            <span  class="cursor-porinter"  @click="$router.push({ name: 'staff-detail', query: { staffId: scope.row.wechatNumber } })">
+              {{scope.row.staffName}}
+            </span>
+          </template>
         </el-table-column>
 
         <el-table-column prop="ImportShij" label="获得积分" show-overflow-tooltip min-width="180" sortable="custom" :sort-orders="['ascending','descending']">
         </el-table-column>
 
-        <el-table-column prop="importTime" label="导入时间" min-width="100" sortable="custom" :sort-orders="['ascending','descending']">
+        <el-table-column prop="importTime" label="最后一次更新时间" min-width="100" sortable="custom" :sort-orders="['ascending','descending']">
         </el-table-column>
 
-        <el-table-column align="center" fixed="right" label="操作" min-width="130">
+        <!-- <el-table-column align="center" fixed="right" label="操作" min-width="130">
           <template slot-scope="scope">
             <span :style="{ marginRight: '8px' }" class="cursor-porinter" @click="del(scope.row)">
               删除
             </span>
           </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
       <!-- ** -->
       <Ul-Page :total="201" @getData="getData" />
@@ -146,10 +151,10 @@
       /**
        * 删除课程
        * */
-      del: function (row) {
-        this.delDate = row;
-        this.confrimVisible.state = true;
-      },
+      // del: function (row) {
+      //   this.delDate = row;
+      //   this.confrimVisible.state = true;
+      // },
       /**
        * 表格排序事件处理函数
        * @param {object} {column,prop,order} 列数据|排序字段|排序方式

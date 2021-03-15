@@ -5,17 +5,19 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 14:50:11
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-12 17:51:20
+ * @LastEditTime: 2021-03-15 14:01:54
  */
 import Vue from 'vue'
 
 import App from './App.vue'
 
-import router from '@/router/router'
+import {router} from '@/router/router'
 
 import store from '@/store/store'
 
 import ElementUI from 'element-ui'
+
+import {filters} from './filters' // global filters
 
 import 'element-ui/lib/theme-chalk/index.css'
 
@@ -29,8 +31,11 @@ Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 
-new Vue({
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
+})
 
+new Vue({
   methods: {
     //提示信息
     $tipsInfo(message, type) {

@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 22:59:14
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-14 13:47:23
+ * @LastEditTime: 2021-03-15 18:56:06
 -->
 <template>
   <div class="ul-course-to-examine">
@@ -16,7 +16,7 @@
       <!-- ** -->
       <Ul-nav @getData="getData">
         <template v-slot:left>
-          课程名称：{{$route.query.courseName}} 课程积分：{{$route.query.coursePoints}}
+          课程名称：{{$route.query.courseName}} 课程积分：{{$route.query.rewardPoint}}
         </template>
       </Ul-nav>
       <!-- ** -->
@@ -91,11 +91,11 @@
 </template>
 
 <script>
-  import UlNav from "@/components/nav";
+  import UlNav from "@/components/nav"
 
-  import UlPage from "@/components/paging";
+  import UlPage from "@/components/paging"
 
-  import UlConfirm from "@/components/confirm";
+  import UlConfirm from "@/components/confirm"
 
   export default {
     name: "course-to-examine",

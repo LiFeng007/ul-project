@@ -5,10 +5,15 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 14:50:11
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-11 14:26:23
+ * @LastEditTime: 2021-03-15 10:40:45
  */
 import Vue from 'vue'
+
 import Router from 'vue-router'
+
+import NProgress from 'nprogress'
+
+import 'nprogress/nprogress.css'
 
 import courseManagement from './modules/course-management'
 
@@ -20,7 +25,7 @@ import staffManagement from './modules/staff-management'
 
 Vue.use(Router)
 
-export default new Router({
+export const router =  new Router({
   routes: [
     {
       path:'/' , 
@@ -42,3 +47,12 @@ export default new Router({
   },
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  NProgress.start();
+  next()
+})
+
+router.afterEach(() => {
+  NProgress.done();
+});
