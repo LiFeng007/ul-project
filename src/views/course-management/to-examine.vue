@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 22:59:14
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-15 18:56:06
+ * @LastEditTime: 2021-03-16 14:06:14
 -->
 <template>
   <div class="ul-course-to-examine">
@@ -20,7 +20,7 @@
         </template>
       </Ul-nav>
       <!-- ** -->
-      <el-table ref="filterTable" :data="masterData" height="500" style="width: 100%">
+      <el-table ref="filterTable" :data="masterData" @sort-change="onSortChange" @filter-change="filterStatus" height="500" style="width: 100%">
 
         <el-table-column prop="wechatNumber" label="微信号" min-width="120">
         </el-table-column>
@@ -38,28 +38,26 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="uploadTime" label="上传时间" min-width="120">
+        <el-table-column prop="uploadTime" label="上传时间" min-width="180" show-overflow-tooltip sortable="custom" :sort-orders="['ascending','descending']">
         </el-table-column>
 
-        <el-table-column prop="reviewer" label="审核人" min-width="180" show-overflow-tooltip sortable>
+        <el-table-column prop="reviewer" label="审核人" min-width="120" show-overflow-tooltip >
         </el-table-column>
 
-        <el-table-column  min-width="100" label="状态" sortable :filters="[
+        <el-table-column min-width="100" label="状态"  :filters="[
         { text: '待审核', value: '0' }, 
         { text: '待上传', value: '1' },
         { text: '已完成', value: '2' },
         { text: '已驳回', value: '3' }
-        ]" :filter-method="filterStatus">
-        <template slot-scope="scope">
+        ]">
+          <template slot-scope="scope">
 
-            <span 
-            :class="[
+            <span :class="[
             scope.row.status === '待审核' ? 'completed': '' , 
             scope.row.status === '待上传' ? 'toBeUploaded': '' , 
             scope.row.status === '已完成' ? 'success': '' , 
             scope.row.status === '已驳回' ? 'rejected': '' , 
-            ]"
-            >
+            ]">
               {{scope.row.status}}
             </span>
 
@@ -69,11 +67,11 @@
         <el-table-column align="center" fixed="right" label="操作" min-width="130">
           <template slot-scope="scope">
 
-            <span @click="handlerCourse(true , scope.row)" :style="{ marginRight: '8px' }" class="cursor-porinter">
+            <span @click="scope.row.status === '待审核' && handlerCourse(true , scope.row)" :style="{ marginRight: '8px' }" :class="[scope.row.status === '待审核' ? 'cursor-porinter':'no-handle' ]">
               通过
             </span>
 
-            <span @click="handlerCourse(false , scope.row)" :style="{ marginRight: '8px' }" class="cursor-porinter">
+            <span @click="scope.row.status === '待审核' && handlerCourse(false , scope.row)" :style="{ marginRight: '8px' }" :class="[scope.row.status === '待审核' ? 'cursor-porinter':'no-handle' ]">
               不通过
             </span>
 
@@ -91,25 +89,19 @@
 </template>
 
 <script>
-  import UlNav from "@/components/nav"
-
-  import UlPage from "@/components/paging"
-
-  import UlConfirm from "@/components/confirm"
+  import { publicMixin } from "@/mixin/publicMixin";
 
   export default {
     name: "course-to-examine",
 
-    components: { UlNav, UlPage, UlConfirm },
+    mixins: [publicMixin],
 
     data() {
       return {
         adoptVisible: { state: false }, //通过确认框显示
-        noVisible:{ state: false }, //不通过确认框显示
+        noVisible: { state: false }, //不通过确认框显示
         confirmMssage: [],
-        retrievalInfo: "", //检索信息
-        StatusScreening:"" , //状态筛选
-        delDate: {}, //被处理的数据 通过或者不通过
+        StatusScreening: "", //状态筛选
         masterData: [
           {
             wechatNumber: "dhsjkhdlksdjsk",
@@ -160,43 +152,47 @@
        * 获取列表数据
        * */
       getData: function (e, page) {
-        e !== null && (this.retrievalInfo = e)
-        const pageObj = page ? page : { currentPage: 1, limit: 10 }
-        console.log(this.retrievalInfo, pageObj , this.StatusScreening)
+        e && (this.payload.searchKey = e);
+        if (page) {
+          this.payload.pageNumber = page.pageNumber;
+          this.payload.pageSize = page.pageSize;
+        }
+        console.log({ ...this.payload.pageObj, ...this.payload });
       },
       /**
        * 通过审核
        * **/
       adoptMeth: function () {
-        console.log("通过", this.delDate)
-        this.adoptVisible.state = false
+        console.log("通过", this.delDate);
+        this.adoptVisible.state = false;
       },
       /**
        * 不通过审核
-       * */ 
-      noMeth:function(){
-        console.log("不通过", this.delDate)
-        this.noVisible.state = false
-      } , 
+       * */
+      noMeth: function () {
+        console.log("不通过", this.delDate);
+        this.noVisible.state = false;
+      },
       /**
        * 状态检索
        * */
       filterStatus: function (status) {
-        this.StatusScreening = status
-        console.log(status)
+        this.StatusScreening = status;
+        console.log(status);
       },
       /**
        * 通过 or 不通过方法调取
-       * */ 
-      handlerCourse:function(status , row){
+       * */
+      handlerCourse: function (status, row) {
         this.confirmMssage = [
-          `确认${status? '要通过' : '不通过'}当前截图吗？` , 
-          `${status ? '通过后该员工将获取相应的积分' : '不通过该员工将无法获取积分'}，请仔细核对后操作。`
-        ]
-        this.delDate = row
-        status ? this.adoptVisible.state = true : this.noVisible.state = true
-        
-      }
+          `确认${status ? "要通过" : "不通过"}当前截图吗？`,
+          `${
+            status ? "通过后该员工将获取相应的积分" : "不通过该员工将无法获取积分"
+          }，请仔细核对后操作。`,
+        ];
+        this.delDate = row;
+        status ? (this.adoptVisible.state = true) : (this.noVisible.state = true);
+      },
     },
   };
 </script>

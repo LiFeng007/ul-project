@@ -11,15 +11,54 @@
 .ul-main-com {
   padding: 0.16rem;
 
-  .ul-nav-left span {
-    text-decoration: underline;
-    margin-left: 12px;
-    -moz-user-select: none;
-    -o-user-select: none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+  .ul-nav-com {
+    height: 72px;
+    padding: 0 0.016rem;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 2px 2px 0 0;
+    padding: 0 0.24rem;
+    .ul-nav-left {
+      font-size: 0.14rem;
+      color: #35393f;
+      line-height: 0.2rem;
+    }
+
+    .ul-nav-left span {
+      margin-left: 12px;
+      width: 48px;
+      font-weight: 400;
+      color: $routine;
+      line-height: 20px;
+    }
+
+
+
+
+
+  }
+
+
+  .ul-page {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 48px;
+    background: #ffffff;
+    padding: 0 0.16rem;
+    color: #67717a;
+
+    .el-input--mini .el-input__inner {
+      height: 24px;
+      // line-height: 24px;
+    }
+
+    .el-input__icon {
+      height: auto;
+    }
   }
 
   .el-table {
@@ -48,8 +87,9 @@
     }
 
     .heade-prot {
-      width: 30px !important;
-      height: 30px !important;
+      width: 42px !important;
+      height: 42px !important;
+      border-radius: 50%;
     }
   }
 }
@@ -104,36 +144,21 @@
             width: 3rem;
             flex-wrap: nowrap;
 
-            .screenshot {
-              width: 0.9rem;
-              height: 0.8rem;
-              background-color: gray;
-              display: flex;
-              align-items: center;
-              justify-content: center;
+            img {
+              width: 44px;
+              height: 44px;
+              opacity: 1;
+              border: 1px solid #e4e4e4;
               border-radius: 50%;
-              overflow: hidden;
-
-              &>span {
-                display: inline-block;
-                width: 0.79rem;
-                height: 0.72rem;
-                // border-radius: 50%;
-                margin-left: 0;
-              }
-
-              img {
-                width: 100%;
-                height: 100%;
-                // clip-path: circle(50%);
-              }
             }
+            
 
             .content {
               margin-left: 8px;
             }
-            .header{
-              min-width:164px ;
+
+            .header {
+              min-width: 164px;
             }
           }
         }
@@ -160,8 +185,8 @@
   }
 }
 
-.ul-staff-detail-com{
-  .detail-main{
+.ul-staff-detail-com {
+  .detail-main {
     margin-left: 15% !important;
   }
 }

@@ -5,24 +5,12 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-01-28 10:53:53
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-11 21:33:43
+ * @LastEditTime: 2021-03-16 15:06:28
  */
 const path = require("path")
 
 const isProduction = process.env.NODE_ENV === 'production'
 
-// const px2rem = require('postcss-px2rem')
-
-// // 配置基本大小
-// const postcss = px2rem({
-//   remUnit: 128
-// })
-
-const px2rem = require('postcss-px2rem')
-
-const postcss = px2rem({
-  remUnit: 100 // 基准值
-})
 
 function resolve(dir) {
   return path.join(__dirname, dir);

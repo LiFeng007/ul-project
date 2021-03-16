@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:29:27
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-15 17:24:21
+ * @LastEditTime: 2021-03-16 13:55:16
 -->
 <template>
   <div class="ul-staff-management">
@@ -18,9 +18,9 @@
         </template>
       </Ul-nav>
       <!-- ** -->
-      <el-table ref="filterTable" :data="masterData" height="500" style="width: 100%">
+      <el-table ref="filterTable" :data="masterData" @sort-change="onSortChange"  @filter-change="filterStatus" height="500" style="width: 100%">
 
-        <el-table-column prop="screenshot" show-overflow-tooltip min-width="80">
+        <el-table-column prop="screenshot" align="center"  min-width="80">
           <template slot-scope="scope">
             <!-- <el-image @click="() => {}" :src="scope.row.screenshot">
             </el-image> -->
@@ -48,24 +48,29 @@
         <el-table-column prop="email" label="邮箱" min-width="220">
         </el-table-column>
 
-        <el-table-column prop="combatPower" label="战力值" min-width="180" show-overflow-tooltip sortable>
+        <el-table-column prop="combatPower" label="战力值" min-width="180" show-overflow-tooltip  sortable="custom" :sort-orders="['ascending','descending']">
         </el-table-column>
 
         <el-table-column prop="title" label="称号" min-width="100">
         </el-table-column>
 
-        <el-table-column prop="currentPoints" label="当前积分" min-width="100" sortable>
+        <el-table-column prop="currentPoints" label="当前积分" min-width="100"  sortable="custom" :sort-orders="['ascending','descending']">
         </el-table-column>
 
-        <el-table-column prop="completeCourseNumber" label="完成课程数" min-width="140" sortable>
+        <el-table-column prop="completeCourseNumber" label="完成课程数" min-width="140"  sortable="custom" :sort-orders="['ascending','descending']">
         </el-table-column>
 
-        <el-table-column prop="completeProjectNumber" label="完成项目数" min-width="140" sortable>
+        <el-table-column prop="completeProjectNumber" label="完成项目数" min-width="140"  sortable="custom" :sort-orders="['ascending','descending']">
         </el-table-column>
 
-        <el-table-column align="center" fixed="right" label="状态" min-width="100">
+        <el-table-column align="center" fixed="right" label="状态" min-width="100" :filters="[
+        { text: '已启用', value: '1' }, 
+        { text: '已禁用', value: '0' },
+        ]">
           <template slot-scope="scope">
-            {{scope.row.status | status('已启用' , '已禁用')}}
+            <span :class="[scope.row.status ? 'success': 'rejected' ]">
+              {{scope.row.status | status('已启用' , '已禁用')}}
+            </span>
           </template>
         </el-table-column>
 
@@ -99,17 +104,13 @@
 </template>
 
 <script>
-  import UlNav from "@/components/nav";
 
-  import UlPage from "@/components/paging";
+ import { publicMixin } from "@/mixin/publicMixin";
 
-  import UlConfirm from "@/components/confirm";
-
-  import UlUpload from "@/components/upload";
   export default {
     name: "staff-management",
 
-    components: { UlNav, UlPage, UlConfirm, UlUpload },
+    mixins:[publicMixin] , 
 
     data() {
       return {
@@ -121,8 +122,6 @@
           "确认要删除当前员工吗？",
           "员工 删除后将不可操作，请仔细核对后删除。",
         ],
-        retrievalInfo: "", //检索信息
-        delDate: {}, //将被删除的数据
         uploadTips: {}, //上传文件的提示信息
         masterData: [
           {
@@ -193,10 +192,13 @@
       /**
        * 获取列表数据
        * */
-      getData: function (e, page) {
-        e !== null && (this.retrievalInfo = e);
-        const pageObj = page ? page : { currentPage: 1, limit: 10 };
-        console.log(this.retrievalInfo, pageObj);
+       getData: function (e, page) {
+        e && (this.payload.searchKey = e);
+        if (page) {
+          this.payload.pageNumber = page.pageNumber;
+          this.payload.pageSize = page.pageSize;
+        }
+        console.log({ ...this.payload.pageObj, ...this.payload });
       },
       /**
        * 询问对话框提交

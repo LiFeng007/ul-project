@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:28:38
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-15 17:02:44
+ * @LastEditTime: 2021-03-16 11:45:47
 -->
 <template>
   <div class="ul-puzzle-solving">
@@ -55,18 +55,12 @@
 </template>
 
 <script>
-  import UlNav from "@/components/nav";
-
-  import UlPage from "@/components/paging";
-
-  import UlConfirm from "@/components/confirm";
-
-  import UlUpload from "@/components/upload";
+  import { publicMixin } from "@/mixin/publicMixin";
 
   export default {
     name: "puzzle-solving-module",
 
-    components: { UlNav, UlPage, UlConfirm, UlUpload },
+    mixins: [publicMixin],
 
     data() {
       return {
@@ -119,9 +113,12 @@
        * 获取列表数据
        * */
       getData: function (e, page) {
-        e !== null && (this.retrievalInfo = e);
-        const pageObj = page ? page : { currentPage: 1, limit: 10 };
-        console.log(this.retrievalInfo, pageObj);
+        e && (this.payload.searchKey = e);
+        if (page) {
+          this.payload.pageNumber = page.pageNumber;
+          this.payload.pageSize = page.pageSize;
+        }
+        console.log({ ...this.payload.pageObj, ...this.payload });
       },
       /**
        * 询问对话框提交
@@ -139,10 +136,10 @@
       },
       /**
        * 模板下载
-       * */ 
-      templateDown(){
-        console.log('模板下载')
-      } , 
+       * */
+      templateDown() {
+        console.log("模板下载");
+      },
       /**
        * 确定上传
        * **/
@@ -160,29 +157,24 @@
           ],
           tableData: [
             { email: "23790we7whud@unilever.com", staff: "张三", integral: "20" },
-            { email: "sdajkldhfkdhl@unilever.com", staff: "李四", integral: "200" },
-            { email: "fnkdhkklfhdl@unilever.com", staff: "法外光秃", integral: "200" },
-            { email: "fjkdkdfhdl@unilever.com", staff: "法外狂徒", integral: "200" },
+            {
+              email: "sdajkldhfkdhl@unilever.com",
+              staff: "李四",
+              integral: "200",
+            },
+            {
+              email: "fnkdhkklfhdl@unilever.com",
+              staff: "法外光秃",
+              integral: "200",
+            },
+            {
+              email: "fjkdkdfhdl@unilever.com",
+              staff: "法外狂徒",
+              integral: "200",
+            },
             { email: "afen@unilever.com", staff: "葬爱", integral: "200" },
           ],
         };
-      },
-      /**
-       * 表格排序事件处理函数
-       * @param {object} {column,prop,order} 列数据|排序字段|排序方式
-       */
-      onSortChange({ prop, order }) {
-        // this.tableData(this.compare(prop,order));
-        console.log(prop, order);
-      },
-      /**
-       * 排序比较
-       * @param {string} propertyName 排序的属性名
-       * @param {string} sort ascending(升序)/descending(降序)
-       * @return {function}
-       */
-      compare(propertyName, sort) {
-        // console.log(prop,order)
       },
     },
 

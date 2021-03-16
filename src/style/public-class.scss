@@ -1,6 +1,10 @@
 .cursor-porinter {
   cursor: pointer;
 }
+.no-handle {
+color: #878788;
+opacity: 0.5;
+}
 
 .completed {
   &:before {

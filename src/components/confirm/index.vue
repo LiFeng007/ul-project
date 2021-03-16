@@ -6,7 +6,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-12 14:04:31
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-14 13:07:08
+ * @LastEditTime: 2021-03-16 11:12:54
 -->
 <template>
   <div class="ul-confrim">
@@ -48,7 +48,6 @@
     },
   };
 </script>
-
 <style lang="scss">
   .ul-confrim {
     .el-dialog {
@@ -60,12 +59,15 @@
         display: flex;
         position: relative;
         margin-bottom: 40px;
+
         img {
           position: absolute;
           top: -4px;
         }
+
         & > span {
           margin-left: 45px;
+
           i {
             height: 24px;
             font-size: 14px;
@@ -74,6 +76,7 @@
             margin-bottom: 4px;
             display: block;
           }
+
           span {
             height: 40px;
             font-size: 12px;

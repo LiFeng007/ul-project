@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-11 23:30:35
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-15 19:45:30
+ * @LastEditTime: 2021-03-16 10:54:20
 -->
 <template>
   <div class="ul-page">
@@ -29,6 +29,9 @@
 </template>
 
 <script>
+
+import Bus from '@/utils/bus.js'
+
   export default {
     name: "pageing",
 
@@ -39,10 +42,17 @@
       },
     },
 
+    mounted() {
+      Bus.$on('setPage' , (pageObj) => {
+        this.pageNumber = pageObj.pageNumber
+        this.pageSize = pageObj.pageSize
+      })
+    },
+
     data() {
       return {
         pageNumber: 1,
-        limit: 10,
+        pageSize: 10,
         currentStart: "",
         currentEnd: "",
       };
@@ -50,7 +60,7 @@
 
     methods: {
       handleSizeChange(val) {
-        this.limit = val;
+        this.pageSize = val;
       },
       handleCurrentChange(val) {
         this.pageNumber = val;
@@ -60,8 +70,8 @@
 
     computed: {
       baseInfo() {
-        const { limit, pageNumber, total } = this;
-        return { limit, pageNumber, total };
+        const { pageSize, pageNumber, total } = this;
+        return { pageSize, pageNumber, total };
       },
     },
 
@@ -69,20 +79,20 @@
       baseInfo: {
         handler(newVal, oldVal) {
           if (oldVal) {
-            if (newVal.limit !== oldVal.limit && oldVal.pageNumber === 1)
+            if (newVal.pageSize !== oldVal.pageSize && oldVal.pageNumber === 1)
               this.$emit("getData", null, newVal);
           }
           // 当前页开始条
-          this.currentStart = (newVal.pageNumber - 1) * newVal.limit + 1;
+          this.currentStart = (newVal.pageNumber - 1) * newVal.pageSize + 1;
           //  当前页结束条
-          this.currentEnd = newVal.pageNumber * newVal.limit;
+          this.currentEnd = newVal.pageNumber * newVal.pageSize;
           //  是否最后一页
           if (
-            Math.ceil(this.total / newVal.limit) === newVal.pageNumber &&
-            this.total % newVal.limit != 0
+            Math.ceil(this.total / newVal.pageSize) === newVal.pageNumber &&
+            this.total % newVal.pageSize != 0
           ) {
-            let endPage = this.total % newVal.limit;
-            this.currentEnd = (newVal.pageNumber - 1) * newVal.limit + endPage;
+            let endPage = this.total % newVal.pageSize;
+            this.currentEnd = (newVal.pageNumber - 1) * newVal.pageSize + endPage;
           }
         },
         deep: true,
@@ -91,22 +101,3 @@
     },
   };
 </script>
-
-<style lang="scss">
-  .ul-page {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 48px;
-    background: #ffffff;
-    padding: 0 0.16rem;
-    color: #67717a;
-    .el-input--mini .el-input__inner {
-      height: 24px;
-      // line-height: 24px;
-    }
-    .el-input__icon {
-      height: auto;
-    }
-  }
-</style>

@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-11 10:50:47
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-15 15:45:43
+ * @LastEditTime: 2021-03-16 14:11:04
 -->
 <template>
   <div class="ul-staff-detail-com">
@@ -16,76 +16,80 @@
       </div>
       <!-- ** -->
       <ul class="detail-main">
-        <li>
+          <li>
           <ul>
             <li>
               <span class="header">头像：</span>
-              <div class="screenshot">
                 <span class="content">
                   <img :src="baseData.screenshot" alt="头像">
                 </span>
-              </div>
             </li>
+            <li>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <ul>
             <li>
               <span class="header">姓名：</span>
               <span class="content">{{baseData.name}}</span>
             </li>
-          </ul>
-        </li>
-        <li>
-          <ul>
             <li>
               <span class="header">OpenID：</span>
               <span class="content">{{baseData.OpenID}}</span>
             </li>
+          </ul>
+        </li>
+        <li>
+          <ul>
             <li>
               <span class="header">微信昵称：</span>
               <span class="content">{{baseData.wechatNikname}}</span>
             </li>
-          </ul>
-        </li>
-        <li>
-          <ul>
             <li>
               <span class="header">微信号：</span>
               <span class="content">{{baseData.wechatNumber}}</span>
             </li>
+          </ul>
+        </li>
+        <li>
+          <ul>
             <li>
               <span class="header">邮箱：</span>
               <span class="content">{{baseData.email}}</span>
             </li>
-          </ul>
-        </li>
-        <li>
-          <ul>
             <li>
               <span class="header">部门：</span>
               <span class="content">{{baseData.department}}</span>
             </li>
+          </ul>
+        </li>
+        <li>
+          <ul>
             <li>
               <span class="header">称号：</span>
               <span class="content">{{baseData.title}}</span>
             </li>
+             <li>
+              <span class="header">战力值：</span>
+              <span class="content">{{baseData.combatPower}}</span>
+            </li>
           </ul>
         </li>
         <li>
           <ul>
-            <li>
-              <span class="header">战力值：</span>
-              <span class="content">{{baseData.combatPower}}</span>
-            </li>
             <li>
               <span class="header">当前积分：</span>
               <span class="content">{{baseData.currentPoints}}</span>
             </li>
+             <li>
+              <span class="header">完成课程数：</span>
+              <span class="content">{{baseData.completeCourseNumber}}</span>
+            </li>
           </ul>
         </li>
         <li>
           <ul>
-            <li>
-              <span class="header">完成课程数：</span>
-              <span class="content">{{baseData.completeCourseNumber}}</span>
-            </li>
             <li>
               <span class="header">完成项目数：</span>
               <span class="content">{{baseData.completeProjectNumber}}</span>

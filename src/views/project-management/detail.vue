@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-11 10:46:41
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-15 11:20:34
+ * @LastEditTime: 2021-03-16 14:59:10
 -->
 <template>
   <div class="ul-peoject-detail-com">
@@ -37,6 +37,11 @@
           <span class="header">上传时间 :</span>
           <span class="content">{{masterData.uploadeTime}}</span>
         </li>
+        <li>
+          <span class="header">跳转链接 :</span>
+          <span class="content cursor-porinter" :style="{color:'#2ABFFF'}" @click="href(masterData.linkUrl)">{{masterData.linkUrl}}</span>
+        </li>
+
       </ul>
     </div>
   </div>
@@ -54,8 +59,15 @@
           projectIntegral: "100積分",
           uploader: "Admin",
           uploadeTime: "2021.03.14 14:15:00",
+          linkUrl: "https://www.baidu.com/",
         },
       };
+    },
+
+    methods: {
+      href: function (url) {
+        window.location.href = url;
+      },
     },
   };
 </script>
