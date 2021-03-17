@@ -9,7 +9,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-12 14:04:31
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-14 17:12:45
+ * @LastEditTime: 2021-03-17 16:47:21
 -->
 <template>
   <div class="ul-upload">
@@ -21,8 +21,8 @@
             <el-button size="small" icon="el-icon-upload" v-if="!fileList.length">点击上传</el-button>
           </div>
           <p :style="{
-              color: uploadTips.type === 'error' ? '#F25B8E' : ' ',
-              color:  uploadTips.type === 'success' || uploadTips.type === 'partialSuccess' ? '#003FAD': '',}" :class="['uploadTips']">
+              color: uploadTips.type == 'error' ? '#F25B8E' :  uploadTips.type == 'success' || uploadTips.type == 'partialSuccess' ? '#003FAD': '',
+              }" :class="['uploadTips']">
             {{ uploadTips.message }}
           </p>
 
@@ -56,11 +56,11 @@
         type: Object,
         required: true,
       },
-      title:{
+      title: {
         // 标题
-        type:String ,
-        required:true
-      } , 
+        type: String,
+        required: true,
+      },
       uploadTips: {
         /**
          * {Object}
@@ -125,11 +125,11 @@
     watch: {
       uploadTips: {
         handler(newVal) {
-          const Node = document.querySelector(".el-upload-list__item");
+          const Node = document.querySelector(".el-upload-list--text");
           switch (newVal.type) {
             case "error":
               this.$nextTick(() => {
-                Node.className = "el-upload-list__item is-ready error";
+                // Node.className = "el-upload-list--text is-ready error";
               });
               break;
             case "success":
@@ -171,6 +171,9 @@
       .error {
         border: 1px solid #f25b8e;
         border-radius: 3px;
+        position: absolute;
+        top: 70px;
+        left: 155px;
       }
       .is-ready {
         outline-color: #fff;

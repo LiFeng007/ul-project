@@ -34,7 +34,7 @@
 
       div {
         opacity: 0.8;
-        font-size: 0.14rem;
+        font-size: 0.14rem !important;
         font-family: PingFangSC, PingFangSC-Regular;
         font-weight: 400;
         text-align: center;
@@ -79,10 +79,10 @@
 
   .graying , .iconfont , .placeholder{
     color: gray;
-    font-size: 14px;
+    font-size: 0.14rem !important;
   }
   .text{
-    margin: 0 0.04rem;
-    font-size: 0.14rem;
+    margin: 0 0.04rem ;
+    font-size: 0.14rem !important;
   }
 }

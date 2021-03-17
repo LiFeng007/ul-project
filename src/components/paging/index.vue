@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-11 23:30:35
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-16 10:54:20
+ * @LastEditTime: 2021-03-17 16:15:57
 -->
 <template>
   <div class="ul-page">
@@ -13,24 +13,14 @@
       共{{ total }}记录 , 当前为{{ currentStart }}-{{ currentEnd }}条
     </div>
     <div class="ul-page-right">
-      <el-pagination
-        small
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="pageNumber"
-        :page-sizes="[10, 20, 30, 50, 100]"
-        :page-size="10"
-        layout="sizes, prev, pager, next, jumper"
-        :total="total"
-      >
+      <el-pagination small @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageNumber" :page-sizes="[10, 20, 30, 50, 100]" :page-size="pageSize" layout="sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
   </div>
 </template>
 
 <script>
-
-import Bus from '@/utils/bus.js'
+  import Bus from "@/utils/bus.js";
 
   export default {
     name: "pageing",
@@ -43,10 +33,10 @@ import Bus from '@/utils/bus.js'
     },
 
     mounted() {
-      Bus.$on('setPage' , (pageObj) => {
-        this.pageNumber = pageObj.pageNumber
-        this.pageSize = pageObj.pageSize
-      })
+      Bus.$on("setPage", (pageObj) => {
+        this.pageNumber = pageObj.pageNumber;
+        this.pageSize = pageObj.pageSize;
+      });
     },
 
     data() {
@@ -61,6 +51,8 @@ import Bus from '@/utils/bus.js'
     methods: {
       handleSizeChange(val) {
         this.pageSize = val;
+        this.pageNumber !== 1 && (this.pageNumber = 1);
+        this.$emit("getData", null, this.baseInfo);
       },
       handleCurrentChange(val) {
         this.pageNumber = val;
@@ -78,10 +70,6 @@ import Bus from '@/utils/bus.js'
     watch: {
       baseInfo: {
         handler(newVal, oldVal) {
-          if (oldVal) {
-            if (newVal.pageSize !== oldVal.pageSize && oldVal.pageNumber === 1)
-              this.$emit("getData", null, newVal);
-          }
           // 当前页开始条
           this.currentStart = (newVal.pageNumber - 1) * newVal.pageSize + 1;
           //  当前页结束条

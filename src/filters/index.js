@@ -5,10 +5,10 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-15 13:48:26
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-15 16:21:18
+ * @LastEditTime: 2021-03-17 11:20:32
  */
 export const filters  = {
-    // 员工状态
+    // 状态
    status(status , sucessStr , fileStr) {
      if(status == 1 ){
       return sucessStr;

@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-11 16:17:29
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-16 10:46:04
+ * @LastEditTime: 2021-03-17 16:11:25
 -->
 <template>
   <div class="ul-nav-com">
@@ -34,6 +34,10 @@ import Bus from '@/utils/bus.js'
 
     methods: {
       handler: function () {
+        if(!this.input){
+          this.$root.$tipsInfo('请输入内容' , 'warning')
+          return
+        }
         this.$emit("getData", this.input, { pageNumber: 1, pageSize: 10 });
         Bus.$emit('setPage' , { pageNumber: 1, pageSize: 10 })
       },

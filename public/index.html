@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 14:50:11
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-11 21:39:17
+ * @LastEditTime: 2021-03-17 11:42:37
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -36,7 +36,7 @@
     }
 
     function setHtmlFontSize() {
-      // 1366是设计稿的宽度，当大于1366时采用1366宽度，比例也是除以13.66
+      // 1280是设计稿的宽度，当大于1280时采用1280宽度，比例也是除以12.80
       deviceWidth = document.documentElement.clientWidth > 1280 ? 1280 : document.documentElement.clientWidth
       document.getElementsByTagName('html')[0].style.cssText = 'font-size:' + deviceWidth / 12.80 + 'px !important'
     }

@@ -5,20 +5,20 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:04:58
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-14 13:54:45
+ * @LastEditTime: 2021-03-17 10:55:14
 -->
 <template>
   <div class="ul-layout">
     <nav>
       <!-- ** -->
       <div class="ul-nav-logo">
-        <img src="@/assets/image/logo.png" title="logo" class="logo"/>
-        <img src="@/assets/image/U+.png" title="u" class="u"/>
+        <img src="@/assets/image/logo.png" title="logo" class="logo" />
+        <img src="@/assets/image/U+.png" title="u" class="u" />
       </div>
       <!-- ** -->
       <div class="ul-nav-link">
         <router-link v-for="(item, index) in routeArr" :key="index" :to="{ name: item.to }" tag="div" class="cursor-porinter">
-          {{ item.name }} 
+          {{ item.name }}
         </router-link>
       </div>
       <!-- ** -->
@@ -27,7 +27,9 @@
       </div>
     </nav>
     <UlCrumbs />
-    <router-view></router-view>
+    <!-- <transition name="fade"> -->
+      <router-view></router-view>
+    <!-- </transition> -->
   </div>
 </template>
 

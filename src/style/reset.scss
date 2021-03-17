@@ -40,8 +40,8 @@ h3,
 h4,
 h5,
 h6,
-th , 
-span , 
+th,
+span,
 div {
   font-size: 12px !important;
   font-weight: normal;
@@ -64,37 +64,51 @@ li {
 a {
   text-decoration: none;
 }
+
 * {
-  scrollbar-color: #e5e5e5 #f7f7f9; /* 滑块颜色  滚动条背景颜色 */
-  scrollbar-width: thin; /* 滚动条宽度有三种：thin、auto、none */
+  scrollbar-color: #e5e5e5 #f7f7f9;
+  /* 滑块颜色  滚动条背景颜色 */
+  scrollbar-width: thin;
+
+  /* 滚动条宽度有三种：thin、auto、none */
   &::-webkit-scrollbar {
     background: #f7f7f9;
-    width: 6px;  /* 纵向滚动条滑块宽度 */
-    height: 6px; /* 横向滚动条滑块宽度 */
+    width: 6px;
+    /* 纵向滚动条滑块宽度 */
+    height: 6px;
+    /* 横向滚动条滑块宽度 */
   }
-  &::-webkit-scrollbar-track-piece { /*滚动条背景颜色*/
+
+  &::-webkit-scrollbar-track-piece {
+    /*滚动条背景颜色*/
     background: #f7f7f9;
   }
-  &::-webkit-scrollbar-thumb { /* 滑块 */
+
+  &::-webkit-scrollbar-thumb {
+    /* 滑块 */
     border-radius: 3px;
     background: #e5e5e5;
   }
+
   // 鼠标放上去滚动条颜色
   &::-webkit-scrollbar-thumb:hover {
     background: $routine;
   }
 }
+
 /*通用父子盒子嵌套浮动问题解决，开始*/
 .clearfix:after {
-	content: "";
-	display: block;
-	height: 0;
-	clear: both;
-	visibility: hidden;
+  content: "";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
 }
+
 .fl {
   float: left;
 }
+
 .fr {
   float: right;
 }
@@ -108,8 +122,16 @@ a {
   height: 0;
 }
 
-button{
+button {
   border: none;
   outline: none;
   cursor: pointer;
+}
+
+img{
+  image-rendering: -moz-crisp-edges; /* Firefox */
+  image-rendering: -o-crisp-edges; /* Opera */
+  image-rendering: -webkit-optimize-contrast; /*Webkit (non-standard naming) */
+  image-rendering: crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor; /* IE (non-standard property) */
 }

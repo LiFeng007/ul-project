@@ -5,13 +5,17 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "mock": "nodemon ./mock/app.js"
   },
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^2.6.5",
     "element-ui": "^2.15.1",
     "extract-css-chunks-webpack-plugin": "^4.9.0",
+    "js-cookie": "^2.2.1",
+    "json-server": "^0.16.3",
+    "mockjs": "^1.1.0",
     "nprogress": "^0.2.0",
     "postcss-px2rem": "^0.3.0",
     "postcss-pxtorem": "^6.0.0",
@@ -33,6 +37,7 @@
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.12.0",
+    "nodemon": "^2.0.7",
     "sass-loader": "^8.0.0",
     "vue-template-compiler": "^2.6.10"
   },

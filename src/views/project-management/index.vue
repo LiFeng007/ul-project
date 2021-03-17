@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:27:53
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-16 13:50:27
+ * @LastEditTime: 2021-03-17 16:36:34
 -->
 <template>
   <div class="ul-project-management">
@@ -19,7 +19,7 @@
         </template>
       </Ul-nav>
       <!-- ** -->
-      <el-table ref="filterTable" :data="masterData" @sort-change="onSortChange"  @filter-change="filterStatus" height="500" style="width: 100%">
+      <el-table ref="filterTable" :data="masterData" @sort-change="onSortChange" @filter-change="filterStatus" height="500" style="width: 100%">
 
         <el-table-column prop="projectName" label="项目名称" min-width="150" show-overflow-tooltip>
           <template slot-scope="scope">
@@ -87,13 +87,12 @@
 </template>
 
 <script>
-
-  import {publicMixin} from "@/mixin/publicMixin"
+  import { publicMixin } from "@/mixin/publicMixin";
 
   export default {
     name: "project-management",
 
-    mixins:[publicMixin],
+    mixins: [publicMixin],
 
     data() {
       return {
@@ -202,6 +201,7 @@
           type: "partialSuccess",
           message: "这是一条成功一部分的信息",
           tableHeader: [
+            { col: "项目ID", prop: "projectId" },
             { col: "项目名称", prop: "projectName" },
             {
               col: "项目描述",
@@ -210,29 +210,45 @@
               isTips: true,
             },
             { col: "项目积分", prop: "projectIntegral" },
+            {
+              col: "跳转链接",
+              prop: "targetUrl",
+              minWidth: "200",
+              isTips: true,
+            },
           ],
           tableData: [
             {
+              projectId: 1,
+              targetUrl: "www.baidu.com",
               projectName: "项目A",
               projectDescribe: "项目描述项目秒项目描述项目描述A",
               projectIntegral: "200",
             },
             {
+              projectId: 1,
+              targetUrl: "www.baidu.com",
               projectName: "项目B",
               projectDescribe: "项目描述项目秒项目描述项目描述B",
               projectIntegral: "20",
             },
             {
+              projectId: 1,
+              targetUrl: "www.baidu.com",
               projectName: "项目C",
               projectDescribe: "项目描述项目秒项目描述项目描述C",
               projectIntegral: "21",
             },
             {
+              projectId: 1,
+              targetUrl: "www.baidu.com",
               projectName: "项目D",
               projectDescribe: "项目描述项目秒项目描述项目描述D",
               projectIntegral: "1",
             },
             {
+              projectId: 1,
+              targetUrl: "www.baidu.com",
               projectName: "项目E",
               projectDescribe: "项目描述项目秒项目描述项目描述E",
               projectIntegral: "100",

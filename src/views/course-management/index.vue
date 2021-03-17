@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:26:46
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-16 13:47:14
+ * @LastEditTime: 2021-03-17 16:18:47
 -->
 <template>
   <div class="ul-course-management">
@@ -217,24 +217,26 @@
        * **/
       upload: function (file) {
         console.log(file);
-        // this.uploadTips = {type:'error' , message:'这是一条错误信息'}
+        this.uploadTips = {type:'error' , message:'这是一条错误信息'}
         // this.uploadTips = {type:'success' , message:'这是一条成功信息'}
-        this.uploadTips = {
-          type: "partialSuccess",
-          message: "这是一条成功一部分的信息",
-          tableHeader: [
-            { col: "课程ID", prop: "corseId" },
-            { col: "课程名称", prop: "corseName" },
-            { col: "跳转路径", prop: "linkUrl", minWidth: 180, isTips: true },
-          ],
-          tableData: [
-            { corseId: 1, corseName: "课程A", linkUrl: "pages/index/index" },
-            { corseId: 2, corseName: "课程B", linkUrl: "pages/index/index" },
-            { corseId: 3, corseName: "课程C", linkUrl: "pages/index/index" },
-            { corseId: 4, corseName: "课程D", linkUrl: "pages/index/index" },
-            { corseId: 5, corseName: "课程E", linkUrl: "pages/index/index" },
-          ],
-        };
+        // this.uploadTips = {
+        //   type: "partialSuccess",
+        //   message: "这是一条成功一部分的信息",
+        //   tableHeader: [
+        //     { col: "课程ID", prop: "corseId" },
+        //     { col: "课程名称", prop: "corseName" },
+        //     { col: "课程描述", prop: "courseDescribe", minWidth: 180, isTips: true },
+        //     { col: "课程积分", prop: "couresJF" },
+        //     { col: "二维码链接", prop: "linkUrl", minWidth: 180, isTips: true },
+        //   ],
+        //   tableData: [
+        //     { corseId: 1, corseName: "课程A",courseDescribe:'这是一段课程描述,这是一段课程描述' , couresJF:'20' , linkUrl: "pages/index/index" },
+        //     { corseId: 2, corseName: "课程B",courseDescribe:'这是一段课程描述,这是一段课程描述' , couresJF:'20' , linkUrl: "pages/index/index" },
+        //     { corseId: 3, corseName: "课程C",courseDescribe:'这是一段课程描述,这是一段课程描述' , couresJF:'20' , linkUrl: "pages/index/index" },
+        //     { corseId: 4, corseName: "课程D",courseDescribe:'这是一段课程描述,这是一段课程描述' , couresJF:'20' , linkUrl: "pages/index/index" },
+        //     { corseId: 5, corseName: "课程E",courseDescribe:'这是一段课程描述,这是一段课程描述' , couresJF:'20' , linkUrl: "pages/index/index" },
+        //   ],
+        // };
       },
      
     },
