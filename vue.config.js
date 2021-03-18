@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-01-28 10:53:53
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-16 15:06:28
+ * @LastEditTime: 2021-03-18 11:46:21
  */
 const path = require("path")
 
@@ -27,7 +27,7 @@ module.exports = {
     config.plugins.delete('prefetch');
     if (isProduction) {
 
-    // 给js和css配置版本
+      // 给js和css配置版本
       config.output.filename('js/[name].[contenthash:7].js').end()
       config.output.chunkFilename('js/[name].[contenthash:7].js').end()
       config.plugin('extract-css-chunks-webpack-plugin').use(require('extract-css-chunks-webpack-plugin')).tap(args => [{
@@ -59,26 +59,38 @@ module.exports = {
   },
   pwa: {
     iconPaths: {
-      favicon32     : 'favicon.ico',
-      favicon16     : 'favicon.ico',
+      favicon32: 'favicon.ico',
+      favicon16: 'favicon.ico',
       appleTouchIcon: 'favicon.ico',
-      maskIcon      : 'favicon.ico',
-      msTileImage   : 'favicon.ico'
-   } 
-  } , 
-//   css: {
-//     loaderOptions: {
-//         postcss: {
-//             plugins: [postcss]
-//         }
-//     },
-// },
+      maskIcon: 'favicon.ico',
+      msTileImage: 'favicon.ico'
+    }
+  },
+  //   css: {
+  //     loaderOptions: {
+  //         postcss: {
+  //             plugins: [postcss]
+  //         }
+  //     },
+  // },
   productionSourceMap: false,//打包时不要map文件
   devServer: {
     overlay: {
       warnings: false,
       errors: false,
     },
+    port: 8080,
+    proxy: {
+      '/rng': {     
+        target: 'https://unilever-wechat.chiefadplus.cn',  
+        ws: false,        //如果要代理 websockets，配置这个参数
+        secure: false,  // 如果是https接口，需要配置这个参数
+        changeOrigin: true,  //是否跨域
+        pathRewrite: {
+          '^/rng': ''
+        }
+      },
+    }
   },
   lintOnSave: true,
 }

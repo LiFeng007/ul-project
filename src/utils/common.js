@@ -78,13 +78,12 @@ export const publicMethod = {
         }
     },
     // 导出公共方法
-    exportMethod(res,fileName) {
-        // console.log(res);
+    exportMethod(url,fileName) {
         const link = document.createElement('a')
         link.style.display = 'none'
-        link.href = URL.createObjectURL(res.data)
-        // link.download = res.headers['content-disposition'] //下载后文件名
-        link.download = fileName//下载的文件名
+        // link.href = URL.createObjectURL(url)
+        link.href = url
+        link.download = fileName
         document.body.appendChild(link)
         link.click()
         document.body.removeChild(link)

@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-15 10:09:56
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-17 10:24:16
+ * @LastEditTime: 2021-03-18 15:56:38
  */
 import axios from 'axios'
 
@@ -15,7 +15,7 @@ import { getToken } from './auth'
 
 import NProgress from 'nprogress'; // progress bar
 
-const DEV_BASE_URL = ''
+const DEV_BASE_URL = '/rng'
 const PROD_BASE_URL = ''
 const BASE_URL = DEV_BASE_URL
 // 创建新的axios实例
@@ -27,15 +27,9 @@ const service = axios.create({
 // 请求拦截器
 service.interceptors.request.use(config => {
   NProgress.start() // 设置加载进度条(开始..)
-  //发请求前做的一些处理
-  config.data = JSON.stringify(config.data)
-  config.headers = {
-    'Content-type': 'application/json'
-  }
-  const token = getToken('名称');//这里取token之前，你肯定需要先拿到token,存一下
-  if (true) {
-    config.params = { 'token': token }
-    config.headers.token = token;
+  const token = window.localStorage.getItem('x-token') ? window.localStorage.getItem('x-token') : 'initialization'
+  if (token) {
+    config.headers['x-token'] = token
   }
   return config
 }, error => {
@@ -65,7 +59,7 @@ service.interceptors.response.use(response => {
         break;
       case 404:
         error.message = '请求错误,未找到该资源'
-        window.location.href = "/NotFound"
+        // window.location.href = "/NotFound"
         break;
       case 405:
         error.message = '请求方法未允许'

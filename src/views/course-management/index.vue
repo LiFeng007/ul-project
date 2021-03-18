@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:26:46
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-17 16:18:47
+ * @LastEditTime: 2021-03-18 19:52:24
 -->
 <template>
   <div class="ul-course-management">
@@ -19,7 +19,7 @@
         </template>
       </Ul-nav>
       <!-- ** -->
-      <el-table ref="filterTable" :data="masterData" @sort-change="onSortChange" @filter-change="filterStatus" height="500" style="width: 100%">
+      <el-table ref="filterTable" :data="masterData" @sort-change="onSortChange" @filter-change="filterStatus" v-loading="tableIsLoading" height="500" style="width: 100%">
 
         <el-table-column prop="courseId" label="课程ID" min-width="120">
         </el-table-column>
@@ -41,7 +41,12 @@
         <el-table-column prop="uploaderUserName" label="上传人" min-width="120">
         </el-table-column>
 
-        <el-table-column prop="Uploadtime" label="上传时间" min-width="180" show-overflow-tooltip sortable="custom" :sort-orders="['ascending','descending']">
+        <el-table-column prop="createdAt" label="上传时间" min-width="180" show-overflow-tooltip sortable="custom" :sort-orders="['ascending','descending']">
+          <template slot-scope="scope">
+            <span>
+              {{scope.row.createdAt | data('YMDHMS')}}
+            </span>
+          </template>
         </el-table-column>
 
         <el-table-column prop="unfinishedNum" label="待上传" min-width="100" sortable="custom" :sort-orders="['ascending','descending']">
@@ -59,9 +64,9 @@
         <el-table-column align="center" fixed="right" label="状态" min-width="100" :filters="[
         { text: '已下线', value: '0' }, 
         { text: '已上线', value: '1' },
-        ]" >
+        ]">
           <template slot-scope="scope">
-            <span :class="[scope.row.status ? 'success': 'rejected' ]">
+            <span :class="[scope.row.status && scope.row.status !== 2 ? 'success': 'rejected' ]">
               {{scope.row.status | status('已上线' , '已下线')}}
             </span>
           </template>
@@ -74,7 +79,7 @@
               查看
             </span>
 
-            <span @click="$router.push({ name: 'course-to-examine', query: { courseName: scope.row.name , rewardPoint:scope.row.rewardPoint  } })" :style="{ marginRight: '8px' }" class="cursor-porinter">
+            <span @click="$router.push({ name: 'course-to-examine', query: { courseName: scope.row.name ,  courseId: scope.row.courseId , rewardPoint:scope.row.rewardPoint  } })" :style="{ marginRight: '8px' }" class="cursor-porinter">
               审核
             </span>
 
@@ -85,7 +90,7 @@
         </el-table-column>
       </el-table>
       <!-- ** -->
-      <Ul-Page :total="201" @getData="getData" />
+      <Ul-Page :total="total" @getData="getData" />
     </div>
     <!-- ** -->
     <Ul-Confirm :confrimVisible="confrimVisible" :message="confirmMssage" @submit="setStatusConfrimSubmit" />
@@ -96,6 +101,15 @@
 
 <script>
   import { publicMixin } from "@/mixin/publicMixin";
+
+  import {
+    templateDown,
+    templateUpload,
+    courseQuery,
+    courseModfiyStatus,
+  } from "@/api/courseManagement";
+
+  import { publicMethod } from "@/utils/common";
 
   export default {
     name: "course-management",
@@ -110,87 +124,41 @@
           "确认要删除当前课程吗？",
           "课程删除后将不可操作，请仔细核对后删除。",
         ],
-        masterData: [
-          {
-            courseId: 2021031201,
-            name: "课程名称",
-            rewardPoint: "50",
-            linkUrl: "www.baidu.com",
-            uploaderUserName: "钢铁侠",
-            Uploadtime: "2020/03/13 11:50:00",
-            unfinishedNum: 25,
-            unreviewedNum: 24,
-            unpassedNum: 12345678,
-            passedNum: 200,
-            status: 1,
-          },
-          {
-            courseId: 2021031202,
-            name: "课程名称1",
-            rewardPoint: "60",
-            linkUrl: "www.baidu2.com",
-            uploaderUserName: "蝙蝠侠",
-            Uploadtime: "2020/03/13 11:50:01",
-            unfinishedNum: 30,
-            unreviewedNum: 24,
-            unpassedNum: 20,
-            passedNum: 200,
-            status: 0,
-          },
-          {
-            courseId: 2021031203,
-            name: "课程名称2",
-            rewardPoint: "501",
-            linkUrl: "www.baidu.com1",
-            uploaderUserName: "蜘蛛侠",
-            Uploadtime: "2020/03/13 11:50:00",
-            unfinishedNum: 21,
-            unreviewedNum: 24,
-            unpassedNum: 20,
-            passedNum: 200,
-            status: 1,
-          },
-          {
-            courseId: 2021031203,
-            name: "课程名称3",
-            rewardPoint: "502",
-            linkUrl: "www.baidu.com2",
-            uploaderUserName: "钢铁侠",
-            Uploadtime: "2020/03/13 11:50:00",
-            unfinishedNum: 24,
-            unreviewedNum: 24,
-            unpassedNum: 20,
-            passedNum: 200,
-            status: 1,
-          },
-        ],
+        masterData: [],
       };
+    },
+
+    mounted() {
+      this.getData();
     },
 
     methods: {
       /**
        * 获取列表数据
        * */
-      getData: function (e, page) {
-        e && (this.payload.searchKey = e);
+      getData: async function (e, page) {
+        e !== null && (this.payload.searchKey = e);
         if (page) {
           this.payload.pageNumber = page.pageNumber;
           this.payload.pageSize = page.pageSize;
         }
-        console.log({ ...this.payload.pageObj, ...this.payload });
-      },
-      /**
-       * 询问对话框提交
-       * **/
-      confrimSubmit: function () {
-        console.log("确认删除", this.delDate);
-        this.confrimVisible.state = false;
+        this.tableIsLoading = true;
+        const res = await courseQuery({
+          ...this.payload,
+        });
+        this.tableIsLoading = false;
+        if (res.data.code == "E0") {
+          this.masterData = res.data.data.records;
+          this.total = res.data.data.total;
+        }
       },
       /**
        * 模板下载
        * */
-      templateDown() {
-        console.log("模板下载");
+      async templateDown() {
+        const res = await templateDown();
+        res.data.code == "E0" &&
+          publicMethod.exportMethod(res.data.data.url, "课程管理模板");
       },
       /**
        * 删除课程
@@ -205,40 +173,85 @@
         this.delDate = row;
         this.confrimVisible.state = true;
       },
-      setStatusConfrimSubmit: function () {
+      setStatusConfrimSubmit: async function () {
         console.log(`${this.delDate.status ? "下线" : "上线"}`, this.delDate);
-        this.delDate.status
-          ? (this.delDate.status = 0)
-          : (this.delDate.status = 1);
+        const res = await courseModfiyStatus({
+          courseId: this.delDate.courseId,
+          status: this.delDate.status ? 2 : 1,
+        })
+          if (res.data.code == "E0") {
+            this.delDate.status
+              ? (this.delDate.status = 0)
+              : (this.delDate.status = 1);
+          }else {
+          this.$root.$tipsInfo(`操作失败 , 失败原因:${res.data.message}`, "error");
+        }
+
         this.confrimVisible.state = false;
       },
       /**
        * 确定上传
        * **/
-      upload: function (file) {
-        console.log(file);
-        this.uploadTips = {type:'error' , message:'这是一条错误信息'}
-        // this.uploadTips = {type:'success' , message:'这是一条成功信息'}
-        // this.uploadTips = {
-        //   type: "partialSuccess",
-        //   message: "这是一条成功一部分的信息",
-        //   tableHeader: [
-        //     { col: "课程ID", prop: "corseId" },
-        //     { col: "课程名称", prop: "corseName" },
-        //     { col: "课程描述", prop: "courseDescribe", minWidth: 180, isTips: true },
-        //     { col: "课程积分", prop: "couresJF" },
-        //     { col: "二维码链接", prop: "linkUrl", minWidth: 180, isTips: true },
-        //   ],
-        //   tableData: [
-        //     { corseId: 1, corseName: "课程A",courseDescribe:'这是一段课程描述,这是一段课程描述' , couresJF:'20' , linkUrl: "pages/index/index" },
-        //     { corseId: 2, corseName: "课程B",courseDescribe:'这是一段课程描述,这是一段课程描述' , couresJF:'20' , linkUrl: "pages/index/index" },
-        //     { corseId: 3, corseName: "课程C",courseDescribe:'这是一段课程描述,这是一段课程描述' , couresJF:'20' , linkUrl: "pages/index/index" },
-        //     { corseId: 4, corseName: "课程D",courseDescribe:'这是一段课程描述,这是一段课程描述' , couresJF:'20' , linkUrl: "pages/index/index" },
-        //     { corseId: 5, corseName: "课程E",courseDescribe:'这是一段课程描述,这是一段课程描述' , couresJF:'20' , linkUrl: "pages/index/index" },
-        //   ],
-        // };
+      upload: async function (file) {
+        var fromData = new FormData();
+        fromData.append("file", file.raw);
+        const res = await templateUpload(fromData, {
+          type: "multipart/form-data",
+        });
+        if (res.data.code == "E0") {
+          const {
+            total,
+            successNum,
+            failureNum,
+            failureCourseList,
+          } = res.data.data;
+          this.uploadTips = {
+            /**
+             * error 文件上传失败
+             * partialSuccess 没有全部成功
+             * success 全部上传成功
+             * */
+            type: successNum == total && total ? "success" : "partialSuccess",
+            message:
+              successNum == total && total
+                ? `上传成功 , 成功上传${total}个课程`
+                : `成功上传${successNum}个课程，${failureNum}个课程不予上传，具体信息如下：`,
+            tableHeader: failureCourseList.length
+              ? [
+                  { col: "课程ID", prop: "courseId" },
+                  { col: "课程名称", prop: "name", minWidth: 180, isTips: true },
+                  { col: "课程类别", prop: "type" },
+                  {
+                    col: "课程简介",
+                    prop: "introduction",
+                    minWidth: 200,
+                    isTips: true,
+                  },
+                  {
+                    col: "课程详细介绍",
+                    prop: "desc",
+                    minWidth: 250,
+                    isTips: true,
+                  },
+                  { col: "课程积分", prop: "rewardPoint" },
+                  {
+                    col: "二维码链接",
+                    prop: "linkUrl",
+                    minWidth: 180,
+                    isTips: true,
+                  },
+                  {
+                    col: "失败原因",
+                    prop: "failureReason",
+                    minWidth: 200,
+                    isTips: true,
+                  },
+                ]
+              : [],
+            tableData: failureCourseList.length ? failureCourseList : [],
+          };
+        }
       },
-     
     },
 
     watch: {

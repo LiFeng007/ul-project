@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 22:59:14
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-16 14:06:14
+ * @LastEditTime: 2021-03-18 20:00:59
 -->
 <template>
   <div class="ul-course-to-examine">
@@ -20,7 +20,7 @@
         </template>
       </Ul-nav>
       <!-- ** -->
-      <el-table ref="filterTable" :data="masterData" @sort-change="onSortChange" @filter-change="filterStatus" height="500" style="width: 100%">
+      <el-table ref="filterTable" :data="masterData" @sort-change="onSortChange" v-loading="tableIsLoading" @filter-change="filterStatus" height="500" style="width: 100%">
 
         <el-table-column prop="wechatNumber" label="微信号" min-width="120">
         </el-table-column>
@@ -41,10 +41,10 @@
         <el-table-column prop="uploadTime" label="上传时间" min-width="180" show-overflow-tooltip sortable="custom" :sort-orders="['ascending','descending']">
         </el-table-column>
 
-        <el-table-column prop="reviewer" label="审核人" min-width="120" show-overflow-tooltip >
+        <el-table-column prop="reviewer" label="审核人" min-width="120" show-overflow-tooltip>
         </el-table-column>
 
-        <el-table-column min-width="100" label="状态"  :filters="[
+        <el-table-column min-width="100" label="状态" :filters="[
         { text: '待审核', value: '0' }, 
         { text: '待上传', value: '1' },
         { text: '已完成', value: '2' },
@@ -53,12 +53,12 @@
           <template slot-scope="scope">
 
             <span :class="[
-            scope.row.status === '待审核' ? 'completed': '' , 
-            scope.row.status === '待上传' ? 'toBeUploaded': '' , 
-            scope.row.status === '已完成' ? 'success': '' , 
-            scope.row.status === '已驳回' ? 'rejected': '' , 
+            scope.row.status === 1 ? 'completed': '' , 
+            scope.row.status === 2 ? 'toBeUploaded': '' , 
+            scope.row.status === 4 ? 'success': '' , 
+            scope.row.status === 3 ? 'rejected': '' , 
             ]">
-              {{scope.row.status}}
+              {{scope.row.status | courseStatus}}
             </span>
 
           </template>
@@ -79,7 +79,7 @@
         </el-table-column>
       </el-table>
       <!-- ** -->
-      <Ul-Page :total="201" @getData="getData" />
+      <Ul-Page :total="total" @getData="getData" />
       <!-- ** -->
       <Ul-Confirm :confrimVisible="adoptVisible" :message="confirmMssage" @submit="adoptMeth" />
       <Ul-Confirm :confrimVisible="noVisible" :message="confirmMssage" @submit="noMeth" />
@@ -91,6 +91,7 @@
 <script>
   import { publicMixin } from "@/mixin/publicMixin";
 
+  import { courseRecordQueryByCourseId } from "@/api/courseManagement";
   export default {
     name: "course-to-examine",
 
@@ -102,62 +103,33 @@
         noVisible: { state: false }, //不通过确认框显示
         confirmMssage: [],
         StatusScreening: "", //状态筛选
-        masterData: [
-          {
-            wechatNumber: "dhsjkhdlksdjsk",
-            wechatNickname: "小爱",
-            name: "万飞",
-            screenshot:
-              "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=147053525,1014959484&fm=26&gp=0.jpg",
-            reviewer: "钢铁侠",
-            status: "待审核",
-            uploadTime: "2020/03/13 11:50:00",
-          },
-          {
-            wechatNumber: 2021031202,
-            wechatNickname: "课程名称1",
-            name: "60",
-            screenshot:
-              "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1021798210,2859690464&fm=26&gp=0.jpg",
-            reviewer: "蝙蝠侠",
-            status: "待上传",
-            uploadTime: "2020/03/13 11:50:01",
-          },
-          {
-            wechatNumber: 2021031203,
-            wechatNickname: "课程名称2",
-            name: "501",
-            screenshot:
-              "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3850099191,250318210&fm=26&gp=0.jpg",
-            reviewer: "蜘蛛侠",
-            status: "已完成",
-            uploadTime: "2020/03/13 11:50:00",
-          },
-          {
-            wechatNumber: 2021031203,
-            wechatNickname: "课程名称3",
-            name: "502",
-            screenshot:
-              "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1633520149,1682204961&fm=26&gp=0.jpg",
-            reviewer: "钢铁侠",
-            status: "已驳回",
-            uploadTime: "2020/03/13 11:50:00",
-          },
-        ],
+        masterData:[]
       };
     },
 
+    mounted() {
+      this.getData()
+    },
+    
     methods: {
       /**
        * 获取列表数据
        * */
-      getData: function (e, page) {
-        e && (this.payload.searchKey = e);
+       getData: async function (e, page) {
+        e !== null && (this.payload.searchKey = e);
         if (page) {
           this.payload.pageNumber = page.pageNumber;
           this.payload.pageSize = page.pageSize;
         }
-        console.log({ ...this.payload.pageObj, ...this.payload });
+        this.tableIsLoading = true;
+        const res = await courseRecordQueryByCourseId({
+          ...this.payload,
+        });
+        this.tableIsLoading = false;
+        if (res.data.code == "E0") {
+          this.masterData = res.data.data.records;
+          this.total = res.data.data.total;
+        }
       },
       /**
        * 通过审核

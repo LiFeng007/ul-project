@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-11 16:17:29
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-17 16:11:25
+ * @LastEditTime: 2021-03-18 18:56:09
 -->
 <template>
   <div class="ul-nav-com">
@@ -22,7 +22,9 @@
 </template>
 
 <script>
-import Bus from '@/utils/bus.js'
+  import Bus from "@/utils/bus.js";
+
+  import { publicMethod } from "@/utils/common";
 
   export default {
     name: "ul-nav",
@@ -33,14 +35,10 @@ import Bus from '@/utils/bus.js'
     },
 
     methods: {
-      handler: function () {
-        if(!this.input){
-          this.$root.$tipsInfo('请输入内容' , 'warning')
-          return
-        }
+      handler: publicMethod.debounce(function () {
         this.$emit("getData", this.input, { pageNumber: 1, pageSize: 10 });
-        Bus.$emit('setPage' , { pageNumber: 1, pageSize: 10 })
-      },
+        Bus.$emit("setPage", { pageNumber: 1, pageSize: 10 });
+      }, 500),
     },
   };
 </script>
