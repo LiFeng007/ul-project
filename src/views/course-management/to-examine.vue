@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 22:59:14
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-18 20:00:59
+ * @LastEditTime: 2021-03-19 12:55:26
 -->
 <template>
   <div class="ul-course-to-examine">
@@ -22,18 +22,24 @@
       <!-- ** -->
       <el-table ref="filterTable" :data="masterData" @sort-change="onSortChange" v-loading="tableIsLoading" @filter-change="filterStatus" height="500" style="width: 100%">
 
-        <el-table-column prop="wechatNumber" label="微信号" min-width="120">
+        <el-table-column prop="wechatNo" label="微信号" min-width="200" show-overflow-tooltip>
         </el-table-column>
 
-        <el-table-column prop="wechatNickname" label="微信昵称" min-width="180">
+        <el-table-column prop="wechatName" label="微信昵称" min-width="180">
         </el-table-column>
 
         <el-table-column prop="name" label="姓名" min-width="100">
         </el-table-column>
 
+        <el-table-column prop="emailAddress" label="邮箱" min-width="180" show-overflow-tooltip>
+        </el-table-column>
+
         <el-table-column prop="screenshot" label="审核截图" show-overflow-tooltip min-width="80">
           <template slot-scope="scope">
-            <el-image style="width: 100px; height: 100px" :src="scope.row.screenshot" :preview-src-list="[scope.row.screenshot]">
+            <el-image :src="scope.row.imageUrl" :preview-src-list="[scope.row.imageUrl]">
+              <div v-if="scope.row.imageUrl == null" :style="{width:'37px !important' , lineHeight:'63px'}" slot="error" class="image-slot">
+                无截图
+              </div>
             </el-image>
           </template>
         </el-table-column>
@@ -41,22 +47,22 @@
         <el-table-column prop="uploadTime" label="上传时间" min-width="180" show-overflow-tooltip sortable="custom" :sort-orders="['ascending','descending']">
         </el-table-column>
 
-        <el-table-column prop="reviewer" label="审核人" min-width="120" show-overflow-tooltip>
+        <el-table-column prop="reviewerName" label="审核人" min-width="120" show-overflow-tooltip>
         </el-table-column>
 
         <el-table-column min-width="100" label="状态" :filters="[
-        { text: '待审核', value: '0' }, 
-        { text: '待上传', value: '1' },
-        { text: '已完成', value: '2' },
-        { text: '已驳回', value: '3' }
+        { text: '待审核', value: 1 }, 
+        { text: '待上传', value: 2 },
+        { text: '已完成', value: 4 },
+        { text: '已驳回', value: 3 }
         ]">
           <template slot-scope="scope">
 
             <span :class="[
-            scope.row.status === 1 ? 'completed': '' , 
-            scope.row.status === 2 ? 'toBeUploaded': '' , 
-            scope.row.status === 4 ? 'success': '' , 
-            scope.row.status === 3 ? 'rejected': '' , 
+            scope.row.status === 1 && 'completed' , 
+            scope.row.status === 2 && 'toBeUploaded' , 
+            scope.row.status === 4 && 'success' , 
+            scope.row.status === 3 && 'rejected' , 
             ]">
               {{scope.row.status | courseStatus}}
             </span>
@@ -103,19 +109,19 @@
         noVisible: { state: false }, //不通过确认框显示
         confirmMssage: [],
         StatusScreening: "", //状态筛选
-        masterData:[]
+        masterData: [],
       };
     },
 
     mounted() {
-      this.getData()
+      this.getData();
     },
-    
+
     methods: {
       /**
        * 获取列表数据
        * */
-       getData: async function (e, page) {
+      getData: async function (e, page) {
         e !== null && (this.payload.searchKey = e);
         if (page) {
           this.payload.pageNumber = page.pageNumber;
@@ -129,6 +135,10 @@
         if (res.data.code == "E0") {
           this.masterData = res.data.data.records;
           this.total = res.data.data.total;
+        } else {
+          this.masterData = [];
+          this.total = 0;
+          this.$root.$tipsInfo(res.data.message, "error");
         }
       },
       /**
@@ -144,13 +154,6 @@
       noMeth: function () {
         console.log("不通过", this.delDate);
         this.noVisible.state = false;
-      },
-      /**
-       * 状态检索
-       * */
-      filterStatus: function (status) {
-        this.StatusScreening = status;
-        console.log(status);
       },
       /**
        * 通过 or 不通过方法调取

@@ -5,18 +5,18 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-15 10:09:56
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-18 15:56:38
+ * @LastEditTime: 2021-03-19 14:23:25
  */
 import axios from 'axios'
 
 import { Message } from 'element-ui'
 
-import { getToken } from './auth'
+import vm from '../main'
 
 import NProgress from 'nprogress'; // progress bar
 
-const DEV_BASE_URL = '/rng'
-const PROD_BASE_URL = ''
+const DEV_BASE_URL = '/api'
+const PROD_BASE_URL = 'https://unilever-wechat.chiefadplus.cn/api/'
 const BASE_URL = DEV_BASE_URL
 // 创建新的axios实例
 const service = axios.create({
@@ -39,6 +39,19 @@ service.interceptors.request.use(config => {
 // 3.响应拦截器
 service.interceptors.response.use(response => {
   NProgress.done() // 设置加载进度条(结束..)
+
+  const code = response.data.code
+
+  switch (code) {
+    case 'E401':
+      vm.$loginAgain('您已被登出,请重新登录~');
+      break;
+    case 'E4006':
+      vm.$loginAgain('当前登录凭证已过期,请重新登录~');
+      break;
+    default:
+      break;
+  }
   return response
 }, error => {
 

@@ -1,4 +1,19 @@
 // cover some element-ui styles
+@import './variables.scss';
+
+@mixin colorBtn($color) {
+  background: $color;
+
+  &:hover {
+    color: white;
+    transition: all .5s;
+
+    &:before,
+    &:after {
+      background: $color;
+    }
+  }
+}
 
 .ul-nav-com {
 
@@ -30,20 +45,37 @@
     font-weight: 500;
     color: #67717a;
   }
-  .default-btn{
+
+  .default-btn {
     margin-right: 8px;
   }
 
-  .el-dialog__headerbtn{
+  .el-dialog__headerbtn {
     top: 16px;
-    &:hover{
-      color:#003fad;
+
+    &:hover {
+      color: #003fad;
     }
   }
 }
-.el-image-viewer__btn .el-image-viewer__actions{
+
+.el-image-viewer__btn .el-image-viewer__actions {
   display: none;
 }
+
+.el-button--primary {
+  @include colorBtn($routine);
+  padding: 0 0.24rem;
+  height: 32px;
+  border-radius: 2px;
+  font-size: 13px;
+  font-weight: 400;
+  color: #ffffff;
+  &:hover , &:focus {
+    background-color: $routine;
+  }
+}
+
 // font-size
 .el-input,
 .el-input__inner,

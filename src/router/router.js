@@ -5,8 +5,10 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 14:50:11
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-18 13:28:49
+ * @LastEditTime: 2021-03-19 14:44:48
  */
+import vm from '../main'
+
 import Vue from 'vue'
 
 import Router from 'vue-router'
@@ -63,7 +65,7 @@ router.beforeEach((to, from, next) => {
     next()
   } else {
     if (!window.localStorage.getItem('x-token')) {
-      next({name:'login'})
+      vm.$loginAgain('您已被登出,请重新登录~' , '提示' , () => next({name:'login'}));
     } else {
       next()
     }

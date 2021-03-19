@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:26:46
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-18 19:52:24
+ * @LastEditTime: 2021-03-19 16:44:10
 -->
 <template>
   <div class="ul-course-management">
@@ -19,7 +19,7 @@
         </template>
       </Ul-nav>
       <!-- ** -->
-      <el-table ref="filterTable" :data="masterData" @sort-change="onSortChange" @filter-change="filterStatus" v-loading="tableIsLoading" height="500" style="width: 100%">
+      <el-table ref="filterTable" :data="masterData"  @sort-change="onSortChange" @filter-change="filterStatus" v-loading="tableIsLoading" height="500" style="width: 100%">
 
         <el-table-column prop="courseId" label="课程ID" min-width="120">
         </el-table-column>
@@ -150,6 +150,10 @@
         if (res.data.code == "E0") {
           this.masterData = res.data.data.records;
           this.total = res.data.data.total;
+        } else {
+          this.masterData = [];
+          this.total = 0;
+          this.$root.$tipsInfo( res.data.message , 'error')
         }
       },
       /**
@@ -186,7 +190,6 @@
           }else {
           this.$root.$tipsInfo(`操作失败 , 失败原因:${res.data.message}`, "error");
         }
-
         this.confrimVisible.state = false;
       },
       /**
@@ -250,6 +253,7 @@
               : [],
             tableData: failureCourseList.length ? failureCourseList : [],
           };
+          this.getData()
         }
       },
     },

@@ -5,12 +5,12 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-11 23:30:35
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-18 16:52:06
+ * @LastEditTime: 2021-03-19 16:22:46
 -->
 <template>
   <div class="ul-page">
     <div class="ul-page-left">
-      共{{ total }}记录 , 当前为{{ currentStart }}-{{ currentEnd }}条
+      共{{ total }}条记录<span v-if="total"> , 当前为{{ currentStart }}-{{ currentEnd }}条</span>
     </div>
     <div class="ul-page-right">
       <el-pagination small @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageNumber" :page-sizes="[10, 20, 30, 50, 100]" :page-size="pageSize" layout="sizes, prev, pager, next, jumper" :total="total - 0">
