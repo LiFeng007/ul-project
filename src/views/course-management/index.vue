@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:26:46
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-19 16:44:10
+ * @LastEditTime: 2021-03-21 14:10:44
 -->
 <template>
   <div class="ul-course-management">
@@ -161,11 +161,10 @@
        * */
       async templateDown() {
         const res = await templateDown();
-        res.data.code == "E0" &&
-          publicMethod.exportMethod(res.data.data.url, "课程管理模板");
+        res.data.code == "E0" && publicMethod.exportMethod(res.data.data.url, "课程管理模板");
       },
       /**
-       * 删除课程
+       * 课程上下线
        * */
       del: function (status, row) {
         this.confirmMssage = [
@@ -178,7 +177,6 @@
         this.confrimVisible.state = true;
       },
       setStatusConfrimSubmit: async function () {
-        console.log(`${this.delDate.status ? "下线" : "上线"}`, this.delDate);
         const res = await courseModfiyStatus({
           courseId: this.delDate.courseId,
           status: this.delDate.status ? 2 : 1,
@@ -196,8 +194,8 @@
        * 确定上传
        * **/
       upload: async function (file) {
-        var fromData = new FormData();
-        fromData.append("file", file.raw);
+        var fromData = new FormData()
+        fromData.append("file", file.raw)
         const res = await templateUpload(fromData, {
           type: "multipart/form-data",
         });

@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-15 10:09:56
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-19 14:23:25
+ * @LastEditTime: 2021-03-21 17:04:02
  */
 import axios from 'axios'
 
@@ -44,11 +44,13 @@ service.interceptors.response.use(response => {
 
   switch (code) {
     case 'E401':
-      vm.$loginAgain('您已被登出,请重新登录~');
+      vm && vm.$loginAgain('您已被登出,请重新登录~');
       break;
     case 'E4006':
-      vm.$loginAgain('当前登录凭证已过期,请重新登录~');
+      vm && vm.$loginAgain('当前登录凭证已过期,请重新登录~');
       break;
+    case 'E500':
+      Message.error('内部错误')
     default:
       break;
   }

@@ -5,15 +5,16 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 14:50:11
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-19 14:44:48
+ * @LastEditTime: 2021-03-20 15:56:21
  */
-import vm from '../main'
 
 import Vue from 'vue'
 
 import Router from 'vue-router'
 
 import NProgress from 'nprogress'
+
+import { Message } from 'element-ui'
 
 import { getToken } from "@/utils/auth"
 
@@ -65,7 +66,8 @@ router.beforeEach((to, from, next) => {
     next()
   } else {
     if (!window.localStorage.getItem('x-token')) {
-      vm.$loginAgain('您已被登出,请重新登录~' , '提示' , () => next({name:'login'}));
+      Message.warning('当前登录凭证已过期 , 请重新登录')
+      next({ name: 'login' })
     } else {
       next()
     }

@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:27:53
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-17 16:36:34
+ * @LastEditTime: 2021-03-21 14:12:07
 -->
 <template>
   <div class="ul-project-management">
@@ -19,37 +19,42 @@
         </template>
       </Ul-nav>
       <!-- ** -->
-      <el-table ref="filterTable" :data="masterData" @sort-change="onSortChange" @filter-change="filterStatus" height="500" style="width: 100%">
+      <el-table ref="filterTable" :data="masterData" @sort-change="onSortChange" @filter-change="filterStatus" v-loading="tableIsLoading" height="500" style="width: 100%">
 
-        <el-table-column prop="projectName" label="项目名称" min-width="150" show-overflow-tooltip>
+        <el-table-column prop="name" label="项目名称" min-width="150" show-overflow-tooltip>
           <template slot-scope="scope">
-            <span @click="$router.push({ name: 'project-detail', query: { projectName: scope.row.projectName } })" :style="{ marginRight: '8px' }" class="cursor-porinter">
-              {{scope.row.projectName}}
+            <span @click="$router.push({ name: 'project-detail', query: { projectName: scope.row.projectName } })" class="cursor-porinter">
+              {{scope.row.name}}
             </span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="projectIntegral" label="项目积分" min-width="120" sortable="custom" :sort-orders="['ascending','descending']">
+        <el-table-column prop="rewardPoint" label="项目积分" min-width="120" sortable="custom" :sort-orders="['ascending','descending']">
         </el-table-column>
 
-        <el-table-column prop="uploader" label="上传人" min-width="100">
+        <el-table-column prop="uploaderUserName" label="上传人" min-width="100">
         </el-table-column>
 
-        <el-table-column prop="uploadTime" label="上传时间" show-overflow-tooltip min-width="180" sortable="custom" :sort-orders="['ascending','descending']">
+        <el-table-column prop="createdAt" label="上传时间" show-overflow-tooltip min-width="180" sortable="custom" :sort-orders="['ascending','descending']">
+          <template slot-scope="scope">
+            <span>
+              {{scope.row.createdAt | data('YMDHMS')}}
+            </span>
+          </template>
         </el-table-column>
 
-        <el-table-column prop="toBeComplete" label="待完成" min-width="120" sortable="custom" :sort-orders="['ascending','descending']">
+        <el-table-column prop="unfinishedNum" label="待完成" min-width="120" sortable="custom" :sort-orders="['ascending','descending']">
         </el-table-column>
 
-        <el-table-column prop="toExamineing" label="审核中" min-width="120" sortable="custom" :sort-orders="['ascending','descending']">
+        <el-table-column prop="unreviewedNum" label="审核中" min-width="120" sortable="custom" :sort-orders="['ascending','descending']">
         </el-table-column>
 
-        <el-table-column prop="completed" label="已完成" min-width="120" sortable="custom" :sort-orders="['ascending','descending']">
+        <el-table-column prop="passedNum" label="已完成" min-width="120" sortable="custom" :sort-orders="['ascending','descending']">
         </el-table-column>
 
         <el-table-column align="center" fixed="right" label="状态" min-width="100" :filters="[
-        { text: '已下线', value: '0' }, 
-        { text: '已上线', value: '1' },
+        { text: '已下线', value: 0 }, 
+        { text: '已上线', value: 1 },
         ]">
           <template slot-scope="scope">
             <span :class="[scope.row.status ? 'success': 'rejected' ]">
@@ -61,11 +66,11 @@
         <el-table-column align="center" fixed="right" label="操作" min-width="130">
           <template slot-scope="scope">
 
-            <span @click="$router.push({ name: 'project-detail', query: { projectName: scope.row.projectName } })" :style="{ marginRight: '8px' }" class="cursor-porinter">
+            <span @click="$router.push({ name: 'project-detail', query: { projectName: scope.row.name } })" :style="{ marginRight: '8px' }" class="cursor-porinter">
               查看
             </span>
 
-            <span @click="$router.push({ name: 'project-to-examine', query: { projectName: scope.row.projectName , projectIntegral:scope.row.projectIntegral  } })" :style="{ marginRight: '8px' }" class="cursor-porinter">
+            <span @click="$router.push({ name: 'project-to-examine', query: { projectName: scope.row.name , projectIntegral:scope.row.rewardPoint  } })" :style="{ marginRight: '8px' }" class="cursor-porinter">
               审核
             </span>
 
@@ -77,7 +82,7 @@
         </el-table-column>
       </el-table>
       <!-- ** -->
-      <Ul-Page :total="201" @getData="getData" />
+      <Ul-Page :total="total" @getData="getData" />
     </div>
     <!-- ** -->
     <Ul-Confirm :confrimVisible="confrimVisible" :message="confirmMssage" @submit="setStatusConfrimSubmit" />
@@ -88,6 +93,15 @@
 
 <script>
   import { publicMixin } from "@/mixin/publicMixin";
+
+  import {
+    templateDown,
+    templateUpload,
+    projectQuery,
+    projectModfiyStatus,
+  } from "@/api/projectManagement";
+
+  import { publicMethod } from "@/utils/common";
 
   export default {
     name: "project-management",
@@ -100,62 +114,37 @@
         uploadVisible: { state: false }, //上传框显示
         confirmMssage: [],
         uploadTips: {}, //上传文件的提示信息
-        masterData: [
-          {
-            projectName: "项目名称1",
-            projectIntegral: "200",
-            toBeComplete: "50",
-            uploader: "钢铁侠",
-            uploadTime: "2020/03/13 11:50:00",
-            toExamineing: 25,
-            completed: 200,
-            status: 1,
-          },
-          {
-            projectName: "项目名称2",
-            projectIntegral: "200",
-            toBeComplete: "50",
-            uploader: "钢铁侠",
-            uploadTime: "2020/03/13 11:50:00",
-            toExamineing: 25,
-            completed: 200,
-            status: 0,
-          },
-          {
-            projectName: "项目名称3",
-            projectIntegral: "200",
-            toBeComplete: "50",
-            uploader: "钢铁侠",
-            uploadTime: "2020/03/13 11:50:00",
-            toExamineing: 25,
-            completed: 200,
-            status: 1,
-          },
-          {
-            projectName: "项目名称4",
-            projectIntegral: "200",
-            toBeComplete: "50",
-            uploader: "钢铁侠",
-            uploadTime: "2020/03/13 11:50:00",
-            toExamineing: 25,
-            completed: 200,
-            status: 1,
-          },
-        ],
+        masterData: [],
       };
+    },
+
+    mounted() {
+      this.getData();
     },
 
     methods: {
       /**
        * 获取列表数据
        * */
-      getData: function (e, page) {
-        e && (this.payload.searchKey = e);
+      getData: async function (e, page) {
+        e !== null && (this.payload.searchKey = e);
         if (page) {
           this.payload.pageNumber = page.pageNumber;
           this.payload.pageSize = page.pageSize;
         }
-        console.log({ ...this.payload.pageObj, ...this.payload });
+        this.tableIsLoading = true;
+        const res = await projectQuery({
+          ...this.payload,
+        });
+        this.tableIsLoading = false;
+        if (res.data.code == "E0") {
+          this.masterData = res.data.data.records;
+          this.total = res.data.data.total;
+        } else {
+          this.masterData = [];
+          this.total = 0;
+          this.$root.$tipsInfo(res.data.message, "error");
+        }
       },
       /**
        * 询问对话框提交
@@ -167,17 +156,26 @@
       /**
        * 模板下载
        * */
-      templateDown() {
-        console.log("模板下载");
+      templateDown: async function () {
+        const res = await templateDown();
+        res.data.code == "E0" &&
+          publicMethod.exportMethod(res.data.data.url, "项目管理模板");
       },
       /**
-       * 修改课程状态
+       * 项目上下线
        * */
-      setStatusConfrimSubmit: function () {
-        console.log(`${this.delDate.status ? "下线" : "上线"}`, this.delDate);
-        this.delDate.status
-          ? (this.delDate.status = 0)
-          : (this.delDate.status = 1);
+      setStatusConfrimSubmit: async function () {
+         const res = await projectModfiyStatus({
+          projectId: this.delDate.projectId,
+          status: this.delDate.status ? 2 : 1,
+        })
+          if (res.data.code == "E0") {
+            this.delDate.status
+              ? (this.delDate.status = 0)
+              : (this.delDate.status = 1);
+          }else {
+          this.$root.$tipsInfo(`操作失败 , 失败原因:${res.data.message}`, "error");
+        }
         this.confrimVisible.state = false;
       },
       del: function (status, row) {
@@ -193,68 +191,66 @@
       /**
        * 确定上传
        * **/
-      upload: function (file) {
-        console.log(file);
-        // this.uploadTips = {type:'error' , message:'这是一条错误信息'}
-        // this.uploadTips = {type:'success' , message:'这是一条成功信息'}
-        this.uploadTips = {
-          type: "partialSuccess",
-          message: "这是一条成功一部分的信息",
-          tableHeader: [
-            { col: "项目ID", prop: "projectId" },
-            { col: "项目名称", prop: "projectName" },
-            {
-              col: "项目描述",
-              prop: "projectDescribe",
-              minWidth: "200",
-              isTips: true,
-            },
-            { col: "项目积分", prop: "projectIntegral" },
-            {
-              col: "跳转链接",
-              prop: "targetUrl",
-              minWidth: "200",
-              isTips: true,
-            },
-          ],
-          tableData: [
-            {
-              projectId: 1,
-              targetUrl: "www.baidu.com",
-              projectName: "项目A",
-              projectDescribe: "项目描述项目秒项目描述项目描述A",
-              projectIntegral: "200",
-            },
-            {
-              projectId: 1,
-              targetUrl: "www.baidu.com",
-              projectName: "项目B",
-              projectDescribe: "项目描述项目秒项目描述项目描述B",
-              projectIntegral: "20",
-            },
-            {
-              projectId: 1,
-              targetUrl: "www.baidu.com",
-              projectName: "项目C",
-              projectDescribe: "项目描述项目秒项目描述项目描述C",
-              projectIntegral: "21",
-            },
-            {
-              projectId: 1,
-              targetUrl: "www.baidu.com",
-              projectName: "项目D",
-              projectDescribe: "项目描述项目秒项目描述项目描述D",
-              projectIntegral: "1",
-            },
-            {
-              projectId: 1,
-              targetUrl: "www.baidu.com",
-              projectName: "项目E",
-              projectDescribe: "项目描述项目秒项目描述项目描述E",
-              projectIntegral: "100",
-            },
-          ],
-        };
+      upload: async function (file) {
+        var fromData = new FormData();
+        fromData.append("file", file.raw);
+        const res = await templateUpload(fromData, {
+          type: "multipart/form-data",
+        });
+        if (res.data.code == "E0") {
+          const {
+            total,
+            successNum,
+            failureNum,
+            failureCourseList,
+          } = res.data.data;
+          this.uploadTips = {
+            /**
+             * error 文件上传失败
+             * partialSuccess 没有全部成功
+             * success 全部上传成功
+             * */
+            type: successNum == total && total ? "success" : "partialSuccess",
+            message:
+              successNum == total && total
+                ? `上传成功 , 成功上传${total}个项目`
+                : `成功上传${successNum}个项目，${failureNum}个项目不予上传，具体信息如下：`,
+            tableHeader: failureCourseList.length
+              ? [
+                  { col: "项目ID", prop: "projectId" },
+                  { col: "项目名称", prop: "name" },
+                  { col: "项目owner", prop: "owner" },
+                  {
+                    col: "项目简介",
+                    prop: "introduction",
+                    minWidth: "200",
+                    isTips: true,
+                  },
+                  {
+                    col: "项目详细介绍",
+                    prop: "desc",
+                    minWidth: "200",
+                    isTips: true,
+                  },
+                  { col: "项目积分", prop: "rewardPoint" },
+                  {
+                    col: "跳转链接",
+                    prop: "linkUrl",
+                    minWidth: "200",
+                    isTips: true,
+                  },
+                  {
+                    col: "失败原因",
+                    prop: "failureReason",
+                    minWidth: "200",
+                    isTips: true,
+                  },
+                ]
+              : [],
+            tableData: failureCourseList.length ? failureCourseList : [],
+          };
+          this.getData();
+        }
       },
     },
 
