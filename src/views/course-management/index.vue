@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:26:46
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-21 14:10:44
+ * @LastEditTime: 2021-03-22 10:39:24
 -->
 <template>
   <div class="ul-course-management">
@@ -62,8 +62,8 @@
         </el-table-column>
 
         <el-table-column align="center" fixed="right" label="状态" min-width="100" :filters="[
-        { text: '已下线', value: '0' }, 
-        { text: '已上线', value: '1' },
+        { text: '已下线', value: 0 }, 
+        { text: '已上线', value: 1 },
         ]">
           <template slot-scope="scope">
             <span :class="[scope.row.status && scope.row.status !== 2 ? 'success': 'rejected' ]">
@@ -129,6 +129,7 @@
     },
 
     mounted() {
+      this.payload.status = [1 , 2  ]
       this.getData();
     },
 

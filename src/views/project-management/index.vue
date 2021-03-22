@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:27:53
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-21 14:12:07
+ * @LastEditTime: 2021-03-23 00:35:06
 -->
 <template>
   <div class="ul-project-management">
@@ -21,9 +21,12 @@
       <!-- ** -->
       <el-table ref="filterTable" :data="masterData" @sort-change="onSortChange" @filter-change="filterStatus" v-loading="tableIsLoading" height="500" style="width: 100%">
 
+        <el-table-column prop="projectId" label="项目ID" min-width="120" >
+        </el-table-column>
+
         <el-table-column prop="name" label="项目名称" min-width="150" show-overflow-tooltip>
           <template slot-scope="scope">
-            <span @click="$router.push({ name: 'project-detail', query: { projectName: scope.row.projectName } })" class="cursor-porinter">
+            <span @click="$router.push({ name: 'project-detail', query: { projectId: scope.row.projectId } })" class="cursor-porinter">
               {{scope.row.name}}
             </span>
           </template>
@@ -66,11 +69,11 @@
         <el-table-column align="center" fixed="right" label="操作" min-width="130">
           <template slot-scope="scope">
 
-            <span @click="$router.push({ name: 'project-detail', query: { projectName: scope.row.name } })" :style="{ marginRight: '8px' }" class="cursor-porinter">
+            <span @click="$router.push({ name: 'project-detail', query: { projectId: scope.row.projectId } })" :style="{ marginRight: '8px' }" class="cursor-porinter">
               查看
             </span>
 
-            <span @click="$router.push({ name: 'project-to-examine', query: { projectName: scope.row.name , projectIntegral:scope.row.rewardPoint  } })" :style="{ marginRight: '8px' }" class="cursor-porinter">
+            <span @click="$router.push({ name: 'project-to-examine', query: { projectName: scope.row.name , projectIntegral:scope.row.rewardPoint , projectId: scope.row.projectId  } })" :style="{ marginRight: '8px' }" class="cursor-porinter">
               审核
             </span>
 
@@ -119,6 +122,7 @@
     },
 
     mounted() {
+      this.payload.status = [1, 2];
       this.getData();
     },
 
@@ -165,16 +169,19 @@
        * 项目上下线
        * */
       setStatusConfrimSubmit: async function () {
-         const res = await projectModfiyStatus({
+        const res = await projectModfiyStatus({
           projectId: this.delDate.projectId,
           status: this.delDate.status ? 2 : 1,
-        })
-          if (res.data.code == "E0") {
-            this.delDate.status
-              ? (this.delDate.status = 0)
-              : (this.delDate.status = 1);
-          }else {
-          this.$root.$tipsInfo(`操作失败 , 失败原因:${res.data.message}`, "error");
+        });
+        if (res.data.code == "E0") {
+          this.delDate.status
+            ? (this.delDate.status = 0)
+            : (this.delDate.status = 1);
+        } else {
+          this.$root.$tipsInfo(
+            `操作失败 , 失败原因:${res.data.message}`,
+            "error"
+          );
         }
         this.confrimVisible.state = false;
       },

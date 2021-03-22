@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 22:59:14
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-19 12:55:26
+ * @LastEditTime: 2021-03-23 00:38:49
 -->
 <template>
   <div class="ul-course-to-examine">
@@ -22,16 +22,13 @@
       <!-- ** -->
       <el-table ref="filterTable" :data="masterData" @sort-change="onSortChange" v-loading="tableIsLoading" @filter-change="filterStatus" height="500" style="width: 100%">
 
-        <el-table-column prop="wechatNo" label="微信号" min-width="200" show-overflow-tooltip>
+        <el-table-column prop="emailAddress" label="邮箱" min-width="180" show-overflow-tooltip>
         </el-table-column>
 
         <el-table-column prop="wechatName" label="微信昵称" min-width="180">
         </el-table-column>
 
         <el-table-column prop="name" label="姓名" min-width="100">
-        </el-table-column>
-
-        <el-table-column prop="emailAddress" label="邮箱" min-width="180" show-overflow-tooltip>
         </el-table-column>
 
         <el-table-column prop="screenshot" label="审核截图" show-overflow-tooltip min-width="80">
@@ -73,11 +70,11 @@
         <el-table-column align="center" fixed="right" label="操作" min-width="130">
           <template slot-scope="scope">
 
-            <span @click="scope.row.status === '待审核' && handlerCourse(true , scope.row)" :style="{ marginRight: '8px' }" :class="[scope.row.status === '待审核' ? 'cursor-porinter':'no-handle' ]">
+            <span @click="scope.row.status === 1 && handlerCourse(true , scope.row , scope.$index)" :style="{ marginRight: '8px' }" :class="[scope.row.status === 1 ? 'cursor-porinter':'no-handle' ]">
               通过
             </span>
 
-            <span @click="scope.row.status === '待审核' && handlerCourse(false , scope.row)" :style="{ marginRight: '8px' }" :class="[scope.row.status === '待审核' ? 'cursor-porinter':'no-handle' ]">
+            <span @click="scope.row.status === 1 && handlerCourse(false , scope.row , scope.$index)" :style="{ marginRight: '8px' }" :class="[scope.row.status === 1 ? 'cursor-porinter':'no-handle' ]">
               不通过
             </span>
 
@@ -97,7 +94,10 @@
 <script>
   import { publicMixin } from "@/mixin/publicMixin";
 
-  import { courseRecordQueryByCourseId } from "@/api/courseManagement";
+  import {
+    courseRecordQueryByCourseId,
+    courseToExamine,
+  } from "@/api/courseManagement";
   export default {
     name: "course-to-examine",
 
@@ -114,6 +114,7 @@
     },
 
     mounted() {
+      this.payload.status = [1, 2, 3, 4];
       this.getData();
     },
 
@@ -130,6 +131,7 @@
         this.tableIsLoading = true;
         const res = await courseRecordQueryByCourseId({
           ...this.payload,
+          courseId: this.$route.query.courseId - 0,
         });
         this.tableIsLoading = false;
         if (res.data.code == "E0") {
@@ -144,28 +146,42 @@
       /**
        * 通过审核
        * **/
-      adoptMeth: function () {
-        console.log("通过", this.delDate);
+      adoptMeth: async function () {
+        const res = await courseToExamine({
+          status: 4,
+          courseRecordId: this.delDate.list.id,
+        });
+        if (res.data.code == "E0" && res.data.data !== null) {
+          this.masterData[this.delDate.index].status = 4;
+          this.$root.$tipsInfo("操作成功", "success");
+        } else this.$root.$tipsInfo("操作失败", "error");
         this.adoptVisible.state = false;
       },
       /**
        * 不通过审核
        * */
-      noMeth: function () {
-        console.log("不通过", this.delDate);
+      noMeth: async function () {
+        const res = await courseToExamine({
+          status: 3,
+          courseRecordId: this.delDate.list.id,
+        });
+        if (res.data.code == "E0" && res.data.data !== null) {
+          this.masterData[this.delDate.index].status = 3;
+          this.$root.$tipsInfo("操作成功", "success");
+        } else this.$root.$tipsInfo("操作失败", "error");
         this.noVisible.state = false;
       },
       /**
        * 通过 or 不通过方法调取
        * */
-      handlerCourse: function (status, row) {
+      handlerCourse: function (status, row, index) {
         this.confirmMssage = [
           `确认${status ? "要通过" : "不通过"}当前截图吗？`,
           `${
             status ? "通过后该员工将获取相应的积分" : "不通过该员工将无法获取积分"
           }，请仔细核对后操作。`,
         ];
-        this.delDate = row;
+        this.delDate = { list: row, index };
         status ? (this.adoptVisible.state = true) : (this.noVisible.state = true);
       },
     },

@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-16 15:40:42
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-21 11:34:59
+ * @LastEditTime: 2021-03-22 14:24:11
  */
 import http from '@/utils/http.js'
 
@@ -25,4 +25,7 @@ export const projectDetailByProjectId = (params) => http.post('/management/proje
 export const projectModfiyStatus = (params) => http.post('/management/project/modify' , params)
 
 // 项目记录查询
-export const projectRecordQueryByProjectId = (params) => http.post('/management/project/record' , params)
+export const projectRecordQuery = (params) => http.post('/management/project/record' , params)
+
+// 项目审核 通过或者不通过
+export const projectToExamine = (params) => http.post('/management/project/record/review' , params) 

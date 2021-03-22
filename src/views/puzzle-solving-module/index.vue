@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:28:38
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-19 20:31:40
+ * @LastEditTime: 2021-03-23 00:35:46
 -->
 <template>
   <div class="ul-puzzle-solving">
@@ -21,7 +21,7 @@
       <!-- ** -->
       <el-table ref="filterTable" :data="masterData" @sort-change="onSortChange" height="500" style="width: 100%">
 
-        <el-table-column prop="wechatNo" label="微信号" min-width="180" show-overflow-tooltip>
+        <el-table-column prop="email" label="邮箱" show-overflow-tooltip min-width="180">
         </el-table-column>
 
         <el-table-column prop="wechatName" label="微信昵称" min-width="180">
@@ -31,9 +31,6 @@
         </el-table-column>
 
         <el-table-column prop="rewardPoint" label="获得积分" min-width="120" sortable>
-        </el-table-column>
-
-        <el-table-column prop="email" label="邮箱" show-overflow-tooltip min-width="180">
         </el-table-column>
 
         <el-table-column prop="uploaderName" label="导入者" show-overflow-tooltip min-width="120">
@@ -168,7 +165,12 @@
               ? [
                   { col: "邮箱", prop: "email", minWidth: 200, isTips: true },
                   { col: "获得积分", prop: "point" },
-                  { col: "失败原型", prop: "failureReason", minWidth: 300, isTips: true }
+                  {
+                    col: "失败原型",
+                    prop: "failureReason",
+                    minWidth: 300,
+                    isTips: true,
+                  },
                 ]
               : [],
             tableData: failurePointList.length ? failurePointList : [],
