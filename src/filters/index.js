@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-15 13:48:26
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-18 20:00:09
+ * @LastEditTime: 2021-03-23 10:35:13
  */
 export const filters = {
   /**
@@ -44,6 +44,10 @@ export const filters = {
    * @return {dataTime} 处理后时间
    */
   data(value, type) {
+    console.log(value);
+    if(!value || value === null){
+      return value
+    }
     var dataTime = "";
     var data = new Date(value);
     var year = data.getFullYear();

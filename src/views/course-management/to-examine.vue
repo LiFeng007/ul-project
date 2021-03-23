@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 22:59:14
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-23 00:38:49
+ * @LastEditTime: 2021-03-23 10:37:47
 -->
 <template>
   <div class="ul-course-to-examine">
@@ -31,7 +31,7 @@
         <el-table-column prop="name" label="姓名" min-width="100">
         </el-table-column>
 
-        <el-table-column prop="screenshot" label="审核截图" show-overflow-tooltip min-width="80">
+        <el-table-column  label="审核截图" show-overflow-tooltip min-width="80">
           <template slot-scope="scope">
             <el-image :src="scope.row.imageUrl" :preview-src-list="[scope.row.imageUrl]">
               <div v-if="scope.row.imageUrl == null" :style="{width:'37px !important' , lineHeight:'63px'}" slot="error" class="image-slot">
@@ -41,7 +41,12 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="uploadTime" label="上传时间" min-width="180" show-overflow-tooltip sortable="custom" :sort-orders="['ascending','descending']">
+        <el-table-column prop="createdAt" label="上传时间" min-width="180" show-overflow-tooltip sortable="custom" :sort-orders="['ascending','descending']">
+          <template slot-scope="scope">
+            <span>
+              {{scope.row.createdAt | data('YMDHMS')}}
+            </span>
+          </template>
         </el-table-column>
 
         <el-table-column prop="reviewerName" label="审核人" min-width="120" show-overflow-tooltip>
