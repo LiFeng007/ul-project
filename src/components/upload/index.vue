@@ -9,7 +9,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-12 14:04:31
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-17 16:47:21
+ * @LastEditTime: 2021-03-25 22:39:13
 -->
 <template>
   <div class="ul-upload">
@@ -38,7 +38,7 @@
         <button :class="['default-btn']" @click="uploadVisible.state = false">
           取 消
         </button>
-        <button class="routine-btn" @click="uploadVisible.state = false">
+        <button class="routine-btn" @click="upload">
           确 定
         </button>
       </span>
@@ -121,7 +121,9 @@
         });
       },
     },
-
+    beforeDestroy() {
+      this.handleRemove()
+    },
     watch: {
       uploadTips: {
         handler(newVal) {
@@ -224,10 +226,12 @@
       }
       .ul-upload-errinfo-table {
         padding: 24px 24px 0 24px;
+        height: 270px;
+        // overflow-y: auto;
         .el-table {
           border: 1px solid #e2e8ed;
           border-radius: 2px;
-
+          height: 250px !important;
           .el-table__header th {
             font-weight: 600;
             color: black;

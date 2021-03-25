@@ -6,9 +6,34 @@
 @import'./public-class.scss';
 @import'./layout.scss';
 
+
+/******/
+.ul-course-management,
+.ul-puzzle-solving,
+.ul-project-management,
+.ul-staff-management,
+.ul-course-to-examine,
+.ul-project-to-examine {
+  height: calc(100% - 105px);
+
+  .el-table {
+    height: calc(100% - 110px) !important;
+  }
+}
+
+/******/
+.ul-staff-management {
+
+  .el-table tr,
+  td {
+    height: 60px;
+  }
+}
+
 /* table表格样式 */
 .ul-main-com {
   padding: 0.16rem;
+  height: calc(100% - 32px) !important;
 
   .ul-nav-com {
     height: 72px;
@@ -20,6 +45,7 @@
     background: #ffffff;
     border-radius: 2px 2px 0 0;
     padding: 0 0.24rem;
+
     .ul-nav-left {
       font-size: 0.14rem;
       color: #35393f;
@@ -105,12 +131,12 @@
 .ul-course-detail-com,
 .ul-peoject-detail-com,
 .ul-staff-detail-com {
-  height: calc(100% - 110px);
+  height: calc(100% - 118px);
   padding: 0.16rem 0.16rem 0 0.16rem;
 
   .detail {
     background-color: #fff;
-    height: 90%;
+    height: calc(100% - 32px);
     padding: 0.24rem 0.24rem 0 0.24rem;
     overflow-y: auto;
 
@@ -150,7 +176,7 @@
               border: 1px solid #e4e4e4;
               border-radius: 50%;
             }
-            
+
 
             .content {
               margin-left: 8px;
@@ -187,5 +213,78 @@
 .ul-staff-detail-com {
   .detail-main {
     margin-left: 15% !important;
+  }
+}
+
+// login
+.login-container {
+  background: url("../assets/image/login_back@2x.png") no-repeat;
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  background-size: 100% 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .login-main {
+    width: 256px;
+    height: 290px;
+    text-align: center;
+    background: #1b3653;
+    border-radius: 12px;
+    box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.56);
+    padding: 36px 32px 32px 26px;
+
+    .title {
+      font-size: 28px !important;
+      margin-bottom: 0.19rem;
+    }
+
+    p {
+      margin-bottom: 0.2rem;
+    }
+
+    .title,
+    p {
+      text-align: left;
+      height: 30px;
+      font-family: FontName;
+      color: #ffffff;
+      line-height: 35px;
+    }
+
+    .el-form-item__content {
+      margin-left: 0 !important;
+    }
+
+    .el-form-item {
+      margin-bottom: 16px;
+    }
+
+    .el-button--primary {
+      width: 256px;
+      height: 36px;
+      background: #ffffff;
+      border-radius: 2px;
+      color: $routine;
+      border-color: #fff;
+    }
+  }
+}
+
+// err-pages
+.err-pages {
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  div {
+    background: url("../assets/image/404.png") no-repeat;
+    background-size: 100% 100%;
+    width: 4.01rem;
+    height: 2.86rem;
   }
 }

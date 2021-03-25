@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:27:53
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-23 00:35:06
+ * @LastEditTime: 2021-03-24 11:52:50
 -->
 <template>
   <div class="ul-project-management">
@@ -21,10 +21,10 @@
       <!-- ** -->
       <el-table ref="filterTable" :data="masterData" @sort-change="onSortChange" @filter-change="filterStatus" v-loading="tableIsLoading" height="500" style="width: 100%">
 
-        <el-table-column prop="projectId" label="项目ID" min-width="120" >
+        <el-table-column prop="projectId" label="项目ID" min-width="120">
         </el-table-column>
 
-        <el-table-column prop="name" label="项目名称" min-width="150" show-overflow-tooltip>
+        <el-table-column prop="name" label="项目名称" min-width="180" show-overflow-tooltip>
           <template slot-scope="scope">
             <span @click="$router.push({ name: 'project-detail', query: { projectId: scope.row.projectId } })" class="cursor-porinter">
               {{scope.row.name}}

@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-11 10:50:47
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-16 14:11:04
+ * @LastEditTime: 2021-03-24 11:46:33
 -->
 <template>
   <div class="ul-staff-detail-com">
@@ -16,13 +16,13 @@
       </div>
       <!-- ** -->
       <ul class="detail-main">
-          <li>
+        <li>
           <ul>
             <li>
               <span class="header">头像：</span>
-                <span class="content">
-                  <img :src="baseData.screenshot" alt="头像">
-                </span>
+              <span class="content">
+                <img v-if="baseData.imageUrl" :src="baseData.imageUrl" alt="头像">
+              </span>
             </li>
             <li>
             </li>
@@ -36,7 +36,7 @@
             </li>
             <li>
               <span class="header">OpenID：</span>
-              <span class="content">{{baseData.OpenID}}</span>
+              <span class="content">{{baseData.openId}}</span>
             </li>
           </ul>
         </li>
@@ -44,55 +44,50 @@
           <ul>
             <li>
               <span class="header">微信昵称：</span>
-              <span class="content">{{baseData.wechatNikname}}</span>
+              <span class="content">{{baseData.nickName}}</span>
             </li>
-            <li>
-              <span class="header">微信号：</span>
-              <span class="content">{{baseData.wechatNumber}}</span>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <ul>
             <li>
               <span class="header">邮箱：</span>
               <span class="content">{{baseData.email}}</span>
             </li>
+          </ul>
+        </li>
+        <li>
+          <ul>
+
             <li>
               <span class="header">部门：</span>
-              <span class="content">{{baseData.department}}</span>
+              <span class="content">{{baseData.position}}</span>
             </li>
-          </ul>
-        </li>
-        <li>
-          <ul>
             <li>
               <span class="header">称号：</span>
-              <span class="content">{{baseData.title}}</span>
-            </li>
-             <li>
-              <span class="header">战力值：</span>
-              <span class="content">{{baseData.combatPower}}</span>
+              <span class="content">{{baseData.highestFieldName}}</span>
             </li>
           </ul>
         </li>
         <li>
           <ul>
+
+            <li>
+              <span class="header">战力值：</span>
+              <span class="content">{{baseData.highestValue}}</span>
+            </li>
             <li>
               <span class="header">当前积分：</span>
-              <span class="content">{{baseData.currentPoints}}</span>
-            </li>
-             <li>
-              <span class="header">完成课程数：</span>
-              <span class="content">{{baseData.completeCourseNumber}}</span>
+              <span class="content">{{baseData.point}}</span>
             </li>
           </ul>
         </li>
         <li>
           <ul>
+
+            <li>
+              <span class="header">完成课程数：</span>
+              <span class="content">{{baseData.courseNum}}</span>
+            </li>
             <li>
               <span class="header">完成项目数：</span>
-              <span class="content">{{baseData.completeProjectNumber}}</span>
+              <span class="content">{{baseData.projectNum}}</span>
             </li>
           </ul>
         </li>
@@ -139,34 +134,33 @@
 </template>
 
 <script>
+  import { userDetailByuserId } from "@/api/staffManagement";
+
   export default {
     name: "staff-detail",
+
     data() {
       return {
-        combatPowerCardIndex: {
-          machineLearning: "50",
-          dataEngineeringArchitect: "80",
-          businessIntelligence: "56",
-          productManager: "80",
-          scientificComputation: "77",
-          applicationDevelopment: "99",
-        },
-        baseData: {
-          screenshot:
-            "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=147053525,1014959484&fm=26&gp=0.jpg",
-          name: "一休",
-          OpenID: "23523534634",
-          wechatNikname: "一休的昵称",
-          wechatNumber: "yixiu378648",
-          email: "yixiu378648@unilever.com",
-          department: "销售一部",
-          title: "战力大师",
-          combatPower: 88,
-          currentPoints: 99,
-          completeCourseNumber: 5,
-          completeProjectNumber: 6,
-        },
+        combatPowerCardIndex: {},
+        baseData: {},
       };
+    },
+
+    mounted() {
+      this.getUserInfo();
+    },
+
+    methods: {
+      getUserInfo: function () {
+        userDetailByuserId({ userId: this.$route.query.staffId }).then((res) => {
+          if (res.data.code == "E0") {
+            this.combatPowerCardIndex = { ...res.data.data };
+            this.baseData = { ...res.data.data };
+          } else {
+            this.$root.$tipsInfo("数据获取失败" + res.data.data.message, "error");
+          }
+        });
+      },
     },
   };
 </script>

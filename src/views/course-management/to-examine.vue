@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 22:59:14
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-23 10:37:47
+ * @LastEditTime: 2021-03-25 21:47:37
 -->
 <template>
   <div class="ul-course-to-examine">
@@ -29,9 +29,14 @@
         </el-table-column>
 
         <el-table-column prop="name" label="姓名" min-width="100">
+          <template slot-scope="scope">
+            <span @click="$router.push({ name: 'staff-detail', query: { staffId: scope.row.userId } })" class="cursor-porinter">
+              {{scope.row.name}}
+            </span>
+          </template>
         </el-table-column>
 
-        <el-table-column  label="审核截图" show-overflow-tooltip min-width="80">
+        <el-table-column label="审核截图" show-overflow-tooltip min-width="80">
           <template slot-scope="scope">
             <el-image :src="scope.row.imageUrl" :preview-src-list="[scope.row.imageUrl]">
               <div v-if="scope.row.imageUrl == null" :style="{width:'37px !important' , lineHeight:'63px'}" slot="error" class="image-slot">

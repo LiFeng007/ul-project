@@ -2,8 +2,9 @@
   cursor: pointer;
 }
 .no-handle {
-color: #878788;
-opacity: 0.5;
+color: #878788 !important;
+opacity: 0.5 !important;
+cursor: default !important;
 }
 
 .completed {

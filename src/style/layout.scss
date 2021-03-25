@@ -1,5 +1,7 @@
 .ul-layout {
   height: 100%;
+  overflow-y: hidden;
+
   nav {
     display: flex;
     background: url('../assets/image/header_back.png');
@@ -59,10 +61,17 @@
     .ul-nav-user {
       margin-left: auto;
       margin-right: 0.24rem;
-
+      display: flex;
+      align-items: center;
       img {
         width: 0.24rem;
         height: 0.24rem;
+      }
+
+      span {
+        color: #fff;
+        font-family: PingFangSC, PingFangSC-Medium;
+        font-weight: 500;
       }
     }
   }
@@ -75,14 +84,19 @@
   padding-left: 0.18rem;
   opacity: 1;
   background: #ffffff;
+  margin-bottom: 6px;
   box-shadow: 0px 0px 3px 0px rgba(16, 58, 95, 0.20);
+  margin-top: 48px;
 
-  .graying , .iconfont , .placeholder{
+  .graying,
+  .iconfont,
+  .placeholder {
     color: gray;
     font-size: 0.14rem !important;
   }
-  .text{
-    margin: 0 0.04rem ;
+
+  .text {
+    margin: 0 0.04rem;
     font-size: 0.14rem !important;
   }
 }

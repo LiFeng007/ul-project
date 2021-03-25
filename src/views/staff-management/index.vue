@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:29:27
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-16 13:55:16
+ * @LastEditTime: 2021-03-24 12:02:46
 -->
 <template>
   <div class="ul-staff-management">
@@ -15,57 +15,55 @@
       <Ul-nav @getData="getData">
         <template v-slot:left>
           <button class="routine-btn" @click="() => uploadVisible.state = true">白名单导入</button>
+          <span class="cursor-porinter" @click="templateDown">下载模板</span>
         </template>
       </Ul-nav>
       <!-- ** -->
-      <el-table ref="filterTable" :data="masterData" @sort-change="onSortChange"  @filter-change="filterStatus" height="500" style="width: 100%">
+      <el-table ref="filterTable" :data="masterData" @sort-change="onSortChange" @filter-change="filterStatus" v-loading="tableIsLoading" height="500" style="width: 100%">
 
-        <el-table-column prop="screenshot" align="center"  min-width="80">
+        <el-table-column prop="screenshot" align="center" min-width="80">
           <template slot-scope="scope">
             <!-- <el-image @click="() => {}" :src="scope.row.screenshot">
             </el-image> -->
-            <img :src="scope.row.screenshot" alt="微信头像" class="heade-prot">
+            <img v-if="scope.row.imageUrl" :src="scope.row.imageUrl" alt="微信头像" class="heade-prot">
           </template>
         </el-table-column>
 
-        <el-table-column prop="wechatNumber" label="微信号" min-width="120">
+        <el-table-column prop="nickName" label="微信昵称" show-overflow-tooltip min-width="180">
         </el-table-column>
 
-        <el-table-column prop="wechatNikname" label="微信昵称" min-width="180">
-        </el-table-column>
-
-        <el-table-column prop="name" label="姓名" min-width="100">
+        <el-table-column prop="name" label="姓名" show-overflow-tooltip min-width="140">
           <template slot-scope="scope">
-            <span @click="$router.push({ name: 'staff-detail', query: { staffId: 'testId' } })" :style="{ marginRight: '8px' }" class="cursor-porinter">
+            <span @click="$router.push({ name: 'staff-detail', query: { staffId: scope.row.userId } })" :style="{ marginRight: '8px' }" class="cursor-porinter">
               {{scope.row.name}}
             </span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="department" label="部门" show-overflow-tooltip min-width="180">
+        <el-table-column prop="position" label="部门" show-overflow-tooltip min-width="180">
         </el-table-column>
 
-        <el-table-column prop="email" label="邮箱" min-width="220">
+        <el-table-column prop="email" label="邮箱" show-overflow-tooltip min-width="220">
         </el-table-column>
 
-        <el-table-column prop="combatPower" label="战力值" min-width="180" show-overflow-tooltip  sortable="custom" :sort-orders="['ascending','descending']">
+        <el-table-column prop="highestValue" label="战力值" min-width="100" sortable="custom" :sort-orders="['ascending','descending']">
         </el-table-column>
 
-        <el-table-column prop="title" label="称号" min-width="100">
+        <el-table-column prop="highestFieldName" label="称号" min-width="100">
         </el-table-column>
 
-        <el-table-column prop="currentPoints" label="当前积分" min-width="100"  sortable="custom" :sort-orders="['ascending','descending']">
+        <el-table-column prop="point" label="当前积分" min-width="100" sortable="custom" :sort-orders="['ascending','descending']">
         </el-table-column>
 
-        <el-table-column prop="completeCourseNumber" label="完成课程数" min-width="140"  sortable="custom" :sort-orders="['ascending','descending']">
+        <el-table-column prop="courseNum" label="完成课程数" min-width="120" sortable="custom" :sort-orders="['ascending','descending']">
         </el-table-column>
 
-        <el-table-column prop="completeProjectNumber" label="完成项目数" min-width="140"  sortable="custom" :sort-orders="['ascending','descending']">
+        <el-table-column prop="projectNum" label="完成项目数" min-width="120" sortable="custom" :sort-orders="['ascending','descending']">
         </el-table-column>
 
         <el-table-column align="center" fixed="right" label="状态" min-width="100" :filters="[
-        { text: '已启用', value: '1' }, 
-        { text: '已禁用', value: '0' },
+        { text: '已启用', value: 1 }, 
+        { text: '已禁用', value: 0 },
         ]">
           <template slot-scope="scope">
             <span :class="[scope.row.status ? 'success': 'rejected' ]">
@@ -77,7 +75,7 @@
         <el-table-column align="center" fixed="right" label="操作" min-width="130">
           <template slot-scope="scope">
 
-            <span @click="$router.push({ name: 'staff-detail', query: { staffId: 'testId' } })" :style="{ marginRight: '8px' }" class="cursor-porinter">
+            <span @click=" scope.row.userId && $router.push({ name: 'staff-detail', query: { staffId: scope.row.userId } })" :style="{ marginRight: '8px' }" :class="[ 'cursor-porinter' , scope.row.userId ? 'cursor-porinter':'no-handle'  ]">
               查看
             </span>
 
@@ -92,7 +90,7 @@
         </el-table-column>
       </el-table>
       <!-- ** -->
-      <Ul-Page :total="201" @getData="getData" />
+      <Ul-Page :total="total" @getData="getData" />
     </div>
     <!-- ** -->
     <Ul-Confirm :confrimVisible="confrimVisible" :message="delconfirmMssage" @submit="delConfrimSubmit" />
@@ -104,13 +102,20 @@
 </template>
 
 <script>
+  import { publicMixin } from "@/mixin/publicMixin";
 
- import { publicMixin } from "@/mixin/publicMixin";
-
+  import {
+    templateDown,
+    templateUpload,
+    userQuery,
+    userModfiyStatus,
+    userDelete,
+  } from "@/api/staffManagement";
+  import { publicMethod } from "@/utils/common";
   export default {
     name: "staff-management",
 
-    mixins:[publicMixin] , 
+    mixins: [publicMixin],
 
     data() {
       return {
@@ -119,133 +124,116 @@
         uploadVisible: { state: false }, //上传框显示
         setStatusConfirmMssage: [],
         delconfirmMssage: [
-          "确认要删除当前员工吗？",
-          "员工 删除后将不可操作，请仔细核对后删除。",
+          "确定要删除当前员工吗 ?",
+          "将清除该员工所有信息 , 请仔细核对后操作 !",
         ],
         uploadTips: {}, //上传文件的提示信息
-        masterData: [
-          {
-            wechatNumber: "zs124839570",
-            wechatNikname: "张三的微信名",
-            name: "张三",
-            department: "人力资源部",
-            email: "zahngsan001@unilever.com",
-            combatPower: "200",
-            title: "算法大神",
-            currentPoints: 200,
-            completeCourseNumber: 8,
-            completeProjectNumber: 2,
-            status: 1,
-            screenshot:
-              "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=147053525,1014959484&fm=26&gp=0.jpg",
-          },
-          {
-            wechatNumber: "ls124839570",
-            wechatNikname: "李四的微信名",
-            name: "李四",
-            department: "人力资源部",
-            email: "zahngsan001@unilever.com",
-            combatPower: "200",
-            title: "算法大神",
-            currentPoints: 200,
-            completeCourseNumber: 8,
-            completeProjectNumber: 2,
-            status: 0,
-            screenshot:
-              "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1021798210,2859690464&fm=26&gp=0.jpg",
-          },
-          {
-            wechatNumber: "ww124839570",
-            wechatNikname: "ww的微信名",
-            name: "王五",
-            department: "人力资源部",
-            email: "zahngsan001@unilever.com",
-            combatPower: "200",
-            title: "算法大神",
-            currentPoints: 200,
-            completeCourseNumber: 8,
-            completeProjectNumber: 2,
-            status: 1,
-            screenshot:
-              "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3850099191,250318210&fm=26&gp=0.jpg",
-          },
-          {
-            wechatNumber: "zs2124839570",
-            wechatNikname: "张三2的微信名",
-            name: "张三2",
-            department: "人力资源部",
-            email: "zahngsan001@unilever.com",
-            combatPower: "200",
-            title: "算法大神",
-            currentPoints: 200,
-            completeCourseNumber: 8,
-            completeProjectNumber: 2,
-            status: 1,
-            screenshot:
-              "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1633520149,1682204961&fm=26&gp=0.jpg",
-          },
-        ],
+        masterData: [],
       };
+    },
+
+    mounted() {
+      this.getData();
     },
 
     methods: {
       /**
        * 获取列表数据
        * */
-       getData: function (e, page) {
-        e && (this.payload.searchKey = e);
+      getData: async function (e, page) {
+        e !== null && (this.payload.searchKey = e);
         if (page) {
           this.payload.pageNumber = page.pageNumber;
           this.payload.pageSize = page.pageSize;
         }
-        console.log({ ...this.payload.pageObj, ...this.payload });
+        this.tableIsLoading = true;
+        const res = await userQuery({
+          ...this.payload,
+        });
+        this.tableIsLoading = false;
+        if (res.data.code == "E0") {
+          this.masterData = res.data.data.records;
+          this.total = res.data.data.total;
+        } else {
+          this.masterData = [];
+          this.total = 0;
+          this.$root.$tipsInfo(res.data.message, "error");
+        }
       },
       /**
-       * 询问对话框提交
-       * **/
-      delConfrimSubmit: function () {
-        console.log("确认删除", this.delDate);
-        this.confrimVisible.state = false;
+       * 白名單模板下载
+       * */
+      templateDown: async function () {
+        const res = await templateDown();
+        res.data.code == "E0" && publicMethod.exportMethod(res.data.data.url, "白名单模板");
       },
+
       /**
-       * 删除课程
+       * 删除员工
        * */
       del: function (row) {
         this.delDate = row;
         this.confrimVisible.state = true;
       },
       /**
-       * 修改员工状态
-       */
-      setStatusConfrimSubmit: function () {
-        console.log(`${this.delDate.status ? "禁用" : "启用"}`, this.delDate);
-        this.delDate.status
-          ? (this.delDate.status = 0)
-          : (this.delDate.status = 1);
-        this.setStatusConfrimVisible.state = false;
+       * 询问对话框提交
+       * **/
+      delConfrimSubmit: async function () {
+        const res = await userDelete({
+          permissionId: this.delDate.id,
+        });
+        if (res.data.code == "E0") {
+          this.$root.$tipsInfo(`操作成功`, "success");
+        } else {
+          this.$root.$tipsInfo(
+            `操作失败 , 失败原因:${res.data.message}`,
+            "error"
+          );
+        }
+        this.confrimVisible.state = false;
       },
       /**
        * 确定上传
        * **/
-      upload: function (file) {
-        console.log(file);
-        // this.uploadTips = {type:'error' , message:'这是一条错误信息'}
-        // this.uploadTips = {type:'success' , message:'这是一条成功信息'}
-        this.uploadTips = {
-          type: "partialSuccess",
-          message: "这是一条成功一部分的信息",
-          tableHeader: [
-            { col: "邮箱", prop: "email", minWidth: 180, isTips: true },
-          ],
-          tableData: [
-            { email: "123323ss@unilever.com" },
-            { email: "123323@unilever.com" },
-            { email: "123325546@unilever.com" },
-            { email: "1233236796@unilever.com" },
-            { email: "123323ryur@unilever.com" },
-            { email: "123323@unilever.com" },
-          ],
-        };
+      upload: async function (file) {
+        var fromData = new FormData();
+        fromData.append("file", file.raw);
+        const res = await templateUpload(fromData, {
+          type: "multipart/form-data",
+        });
+        if (res.data.code == "E0") {
+          const {
+            total,
+            successNum,
+            failureNum,
+            failureCourseList,
+          } = res.data.data;
+          this.uploadTips = {
+            /**
+             * error 文件上传失败
+             * partialSuccess 没有全部成功
+             * success 全部上传成功
+             * */
+            type: successNum == total && total ? "success" : "partialSuccess",
+            message:
+              successNum == total && total
+                ? `上传成功 , 成功上传${total}个员工信息`
+                : `成功上传${successNum}个员工信息，${failureNum}个员工信息不予上传，具体信息如下：`,
+            tableHeader: failureCourseList.length
+              ? [
+                  { col: "邮箱", prop: "email", minWidth: 180, isTips: true },
+                  {
+                    col: "失败原因",
+                    prop: "failureReason",
+                    minWidth: 180,
+                    isTips: true,
+                  },
+                ]
+              : [],
+            tableData: failureCourseList.length ? failureCourseList : [],
+          };
+          this.getData();
+        }
       },
 
       /**
@@ -258,6 +246,24 @@
         ];
         this.delDate = row;
         this.setStatusConfrimVisible.state = true;
+      },
+      setStatusConfrimSubmit: async function () {
+        const res = await userModfiyStatus({
+          permissionId: this.delDate.id,
+          status: this.delDate.status ? 0 : 1,
+        });
+        if (res.data.code == "E0") {
+          this.delDate.status
+            ? (this.delDate.status = 0)
+            : (this.delDate.status = 1);
+          this.$root.$tipsInfo(`操作成功`, "success");
+        } else {
+          this.$root.$tipsInfo(
+            `操作失败 , 失败原因:${res.data.message}`,
+            "error"
+          );
+        }
+        this.setStatusConfrimVisible.state = false;
       },
     },
 

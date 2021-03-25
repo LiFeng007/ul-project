@@ -5,10 +5,10 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:26:46
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-22 10:39:24
+ * @LastEditTime: 2021-03-24 11:52:59
 -->
 <template>
-  <div class="ul-course-management">
+  <div class="ul-course-management" >
     <!-- ** -->
     <div class="ul-main-com">
       <!-- ** -->
@@ -24,7 +24,7 @@
         <el-table-column prop="courseId" label="课程ID" min-width="120">
         </el-table-column>
 
-        <el-table-column label="课程名称" prop="name" min-width="150">
+        <el-table-column label="课程名称" prop="name" min-width="180" show-overflow-tooltip>
           <template slot-scope="scope">
             <span @click="$router.push({ name: 'course-detail', query: { courseId: scope.row.courseId } })" :style="{ marginRight: '8px' }" class="cursor-porinter">
               {{scope.row.name}}

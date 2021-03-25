@@ -5,11 +5,11 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:25:46
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-10 20:26:15
+ * @LastEditTime: 2021-03-25 22:46:48
 -->
 <template>
-  <div>
-    错误页面
+  <div class="err-pages">
+    <div></div>
   </div>
 </template>
 
@@ -18,7 +18,3 @@ export default {
   name:'err-page'
 }
 </script>
-
-<style>
-
-</style>
