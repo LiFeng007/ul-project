@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:27:53
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-24 11:52:50
+ * @LastEditTime: 2021-03-28 11:28:19
 -->
 <template>
   <div class="ul-project-management">
@@ -90,7 +90,7 @@
     <!-- ** -->
     <Ul-Confirm :confrimVisible="confrimVisible" :message="confirmMssage" @submit="setStatusConfrimSubmit" />
     <!-- ** -->
-    <Ul-Upload title="项目上传" :uploadVisible="uploadVisible" :uploadTips="uploadTips" @upload="upload" />
+    <Ul-Upload title="项目上传"  :uploadLoading="uploadLoading" :uploadVisible="uploadVisible" :uploadTips="uploadTips" @upload="upload" />
   </div>
 </template>
 
@@ -154,7 +154,6 @@
        * 询问对话框提交
        * **/
       confrimSubmit: function () {
-        console.log("确认删除", this.delDate);
         this.confrimVisible.state = false;
       },
       /**
@@ -199,11 +198,13 @@
        * 确定上传
        * **/
       upload: async function (file) {
+        this.uploadLoading = true;
         var fromData = new FormData();
         fromData.append("file", file.raw);
         const res = await templateUpload(fromData, {
           type: "multipart/form-data",
         });
+        this.uploadLoading = false;
         if (res.data.code == "E0") {
           const {
             total,

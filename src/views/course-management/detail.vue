@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 22:57:55
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-18 17:43:46
+ * @LastEditTime: 2021-03-28 11:21:48
 -->
 <template>
   <div class="ul-course-detail-com">
@@ -27,11 +27,11 @@
         </li>
         <li>
           <span class="header">课程简介 :</span>
-          <span class="content">{{masterData.introduction}}</span>
+          <span class="content" style="white-space: pre-line;">{{masterData.introduction}}</span>
         </li>
         <li>
           <span class="header">课程详细介绍 :</span>
-          <span class="content">{{masterData.desc}}</span>
+          <span class="content" style="white-space: pre-line;">{{masterData.desc}}</span>
         </li>
         <li>
           <span class="header">课程积分 :</span>
@@ -47,7 +47,7 @@
         </li>
         <li>
           <span class="header">图片ftp链接 :</span>
-          <span class="content cursor-porinter" :style="{color:'#2ABFFF'}" @click="href(masterData.linkUrl)">{{masterData.imageUrl}}</span>
+          <span class="content cursor-porinter" :style="{color:'#2ABFFF'}" @click="href(masterData.linkUrl)">{{masterData.linkUrl}}</span>
         </li>
       </ul>
     </div>

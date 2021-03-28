@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-11 10:40:04
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-16 13:50:49
+ * @LastEditTime: 2021-03-28 11:28:28
 -->
 <template>
   <div class="puzzle-solving-detail">
@@ -135,7 +135,6 @@
        * 询问对话框提交
        * **/
       confrimSubmit: function () {
-        console.log("确认删除", this.delDate);
         this.confrimVisible.state = false;
       },
     },

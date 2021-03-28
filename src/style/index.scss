@@ -30,6 +30,16 @@
   }
 }
 
+/*****/
+.ul-project-to-examine {
+
+  .el-image,
+  img {
+    width: 40px !important;
+    height: 52px !important;
+  }
+}
+
 /* table表格样式 */
 .ul-main-com {
   padding: 0.16rem;
@@ -105,11 +115,7 @@
       color: #003fad;
     }
 
-    .el-image,
-    img {
-      width: 40px !important;
-      height: 52px !important;
-    }
+
 
     .heade-prot {
       width: 42px !important;
@@ -281,6 +287,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
   div {
     background: url("../assets/image/404.png") no-repeat;
     background-size: 100% 100%;

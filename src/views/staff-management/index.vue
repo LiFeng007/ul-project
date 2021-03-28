@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:29:27
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-24 12:02:46
+ * @LastEditTime: 2021-03-28 10:44:28
 -->
 <template>
   <div class="ul-staff-management">
@@ -97,7 +97,7 @@
     <!-- ** -->
     <Ul-Confirm :confrimVisible="setStatusConfrimVisible" :message="setStatusConfirmMssage" @submit="setStatusConfrimSubmit" />
     <!-- ** -->
-    <Ul-Upload title="白名单导入" :uploadVisible="uploadVisible" :uploadTips="uploadTips" @upload="upload" />
+    <Ul-Upload   :uploadLoading="uploadLoading" title="白名单导入" :uploadVisible="uploadVisible" :uploadTips="uploadTips" @upload="upload" />
   </div>
 </template>
 
@@ -196,11 +196,13 @@
        * 确定上传
        * **/
       upload: async function (file) {
+        this.uploadLoading = true;
         var fromData = new FormData();
         fromData.append("file", file.raw);
         const res = await templateUpload(fromData, {
           type: "multipart/form-data",
         });
+        this.uploadLoading = false  ;
         if (res.data.code == "E0") {
           const {
             total,

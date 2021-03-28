@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-16 10:56:04
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-22 10:38:13
+ * @LastEditTime: 2021-03-28 11:27:55
  */
 import UlNav from "@/components/nav"
 
@@ -34,6 +34,7 @@ export const publicMixin = {
       uploadTips: {}, //上传文件的提示信息
       total: 0,//总条数
       tableIsLoading: false, //表格loading层加载与否
+      uploadLoading:false , //上传状态
     }
   },
 
@@ -64,7 +65,6 @@ export const publicMixin = {
     filterStatus: publicMethod.throttle(function (status) {
       this.payload.status = []
       this.payload.status = Object.values(status)[0]
-      console.log(this.payload.status, status, Object.values(status)[0]);
       this.getData()
     }, 500)
   },

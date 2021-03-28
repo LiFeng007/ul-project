@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:28:38
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-23 00:35:46
+ * @LastEditTime: 2021-03-28 10:40:35
 -->
 <template>
   <div class="ul-puzzle-solving">
@@ -50,7 +50,7 @@
     <!-- ** -->
     <Ul-Confirm :confrimVisible="confrimVisible" :message="confirmMssage" @submit="confrimSubmit" />
     <!-- ** -->
-    <Ul-Upload title="积分上传" :uploadVisible="uploadVisible" :uploadTips="uploadTips" @upload="upload" />
+    <Ul-Upload title="积分上传"  :uploadLoading="uploadLoading" :uploadVisible="uploadVisible" :uploadTips="uploadTips" @upload="upload" />
   </div>
 </template>
 
@@ -116,7 +116,6 @@
        * 询问对话框提交
        * **/
       confrimSubmit: function () {
-        console.log("确认删除", this.delDate);
         this.confrimVisible.state = false;
       },
       /**
@@ -138,11 +137,13 @@
        * 确定上传
        * **/
       upload: async function (file) {
+        this.uploadLoading = true;
         var fromData = new FormData();
         fromData.append("file", file.raw);
         const res = await templateUpload(fromData, {
           type: "multipart/form-data",
         });
+        this.uploadLoading = false;
         if (res.data.code == "E0") {
           const {
             total,

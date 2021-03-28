@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-01-28 10:53:53
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-25 19:53:47
+ * @LastEditTime: 2021-03-27 15:24:43
  */
 const path = require("path")
 
@@ -83,7 +83,7 @@ module.exports = {
     port: 8080,
     proxy: {
       '/api': {     
-        target: 'http://127.0.0.1:8933/',  
+        target: 'https://unilever-wechat.chiefadplus.cn/api',  
         ws: false,        //如果要代理 websockets，配置这个参数
         secure: false,  // 如果是https接口，需要配置这个参数
         changeOrigin: true,  //是否跨域

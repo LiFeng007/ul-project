@@ -9,10 +9,10 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-12 14:04:31
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-25 22:39:13
+ * @LastEditTime: 2021-03-28 11:27:43
 -->
 <template>
-  <div class="ul-upload">
+  <div class="ul-upload" >
     <el-dialog :visible.sync="uploadVisible.state" :title="title">
       <div class="ul-upload-main">
         <el-upload ref="uploadMutiple" class="upload-demo" :auto-upload="false" action="Fake Action" :on-preview="handlePreview" :on-remove="handleRemove" :on-change="handleChange" :limit="1" accept=".xlsx,.xls" :on-exceed="handleExceed" :file-list="fileList" multiple>
@@ -39,7 +39,7 @@
           取 消
         </button>
         <button class="routine-btn" @click="upload">
-          确 定
+          {{uploadLoading ? '上传中...' : '确定'}}
         </button>
       </span>
     </el-dialog>
@@ -61,6 +61,11 @@
         type: String,
         required: true,
       },
+      uploadLoading:{
+        // 上传状态
+        type:Boolean ,
+        required:true
+      } , 
       uploadTips: {
         /**
          * {Object}
@@ -86,7 +91,6 @@
         this.$parent.uploadTips = {};
       },
       handlePreview(file) {
-        // console.log(file);
       },
       upload() {
         this.$emit("upload", this.fileList[0]);
@@ -110,13 +114,13 @@
           const uploadSpan = document.createElement("span");
           const removeSpan = document.createElement("span");
 
-          uploadSpan.className = "iconfont icon-21upload cursor-porinter";
+          // uploadSpan.className = "iconfont icon-21upload cursor-porinter";
           removeSpan.className = "iconfont icon-shachu-xue cursor-porinter";
 
           removeSpan.addEventListener("click", this.handleRemove);
-          uploadSpan.addEventListener("click", this.upload);
+          // uploadSpan.addEventListener("click", this.upload);
 
-          Node.appendChild(uploadSpan);
+          // Node.appendChild(uploadSpan);
           Node.appendChild(removeSpan);
         });
       },
@@ -135,15 +139,21 @@
               });
               break;
             case "success":
-              console.log(newVal.type);
               break;
             case "partialSuccess":
-              console.log(newVal.type);
               break;
           }
         },
         deep: true,
       },
+
+
+     uploadVisible: {
+        handler(newVal){
+          !newVal.state && this.handleRemove()
+        } ,
+        deep:true
+      }
     },
   };
 </script>

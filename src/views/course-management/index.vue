@@ -5,10 +5,10 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:26:46
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-24 11:52:59
+ * @LastEditTime: 2021-03-28 11:15:26
 -->
 <template>
-  <div class="ul-course-management" >
+  <div class="ul-course-management">
     <!-- ** -->
     <div class="ul-main-com">
       <!-- ** -->
@@ -19,7 +19,7 @@
         </template>
       </Ul-nav>
       <!-- ** -->
-      <el-table ref="filterTable" :data="masterData"  @sort-change="onSortChange" @filter-change="filterStatus" v-loading="tableIsLoading" height="500" style="width: 100%">
+      <el-table ref="filterTable" :data="masterData" @sort-change="onSortChange" @filter-change="filterStatus" v-loading="tableIsLoading" height="500" style="width: 100%">
 
         <el-table-column prop="courseId" label="课程ID" min-width="120">
         </el-table-column>
@@ -35,7 +35,14 @@
         <el-table-column prop="rewardPoint" label="课程积分" min-width="100" sortable="custom" :sort-orders="['ascending','descending']">
         </el-table-column>
 
-        <el-table-column prop="linkUrl" label="跳转链接" show-overflow-tooltip min-width="180">
+        <el-table-column prop="linkUrl" label="跳转链接"  min-width="100">
+          <template slot-scope="scope">
+            <el-image :src="scope.row.linkUrl" style="width:49px !important;height:48px !important;" :preview-src-list="[scope.row.linkUrl]">
+              <div v-if="!scope.row.linkUrl" slot="error" style="line-height:55px"  class="image-slot">
+                无链接
+              </div>
+            </el-image>
+          </template>
         </el-table-column>
 
         <el-table-column prop="uploaderUserName" label="上传人" min-width="120">
@@ -95,7 +102,7 @@
     <!-- ** -->
     <Ul-Confirm :confrimVisible="confrimVisible" :message="confirmMssage" @submit="setStatusConfrimSubmit" />
     <!-- ** -->
-    <Ul-Upload title="课程上传" :uploadVisible="uploadVisible" :uploadTips="uploadTips" @upload="upload" />
+    <Ul-Upload title="课程上传" :uploadLoading="uploadLoading" :uploadVisible="uploadVisible" :uploadTips="uploadTips" @upload="upload" />
   </div>
 </template>
 
@@ -129,7 +136,7 @@
     },
 
     mounted() {
-      this.payload.status = [1 , 2  ]
+      this.payload.status = [1, 2];
       this.getData();
     },
 
@@ -154,7 +161,7 @@
         } else {
           this.masterData = [];
           this.total = 0;
-          this.$root.$tipsInfo( res.data.message , 'error')
+          this.$root.$tipsInfo(res.data.message, "error");
         }
       },
       /**
@@ -162,7 +169,8 @@
        * */
       async templateDown() {
         const res = await templateDown();
-        res.data.code == "E0" && publicMethod.exportMethod(res.data.data.url, "课程管理模板");
+        res.data.code == "E0" &&
+          publicMethod.exportMethod(res.data.data.url, "课程管理模板");
       },
       /**
        * 课程上下线
@@ -181,13 +189,16 @@
         const res = await courseModfiyStatus({
           courseId: this.delDate.courseId,
           status: this.delDate.status ? 2 : 1,
-        })
-          if (res.data.code == "E0") {
-            this.delDate.status
-              ? (this.delDate.status = 0)
-              : (this.delDate.status = 1);
-          }else {
-          this.$root.$tipsInfo(`操作失败 , 失败原因:${res.data.message}`, "error");
+        });
+        if (res.data.code == "E0") {
+          this.delDate.status
+            ? (this.delDate.status = 0)
+            : (this.delDate.status = 1);
+        } else {
+          this.$root.$tipsInfo(
+            `操作失败 , 失败原因:${res.data.message}`,
+            "error"
+          );
         }
         this.confrimVisible.state = false;
       },
@@ -195,11 +206,13 @@
        * 确定上传
        * **/
       upload: async function (file) {
-        var fromData = new FormData()
-        fromData.append("file", file.raw)
+        this.uploadLoading = true;
+        var fromData = new FormData();
+        fromData.append("file", file.raw);
         const res = await templateUpload(fromData, {
           type: "multipart/form-data",
         });
+        this.uploadLoading = false;
         if (res.data.code == "E0") {
           const {
             total,
@@ -252,7 +265,7 @@
               : [],
             tableData: failureCourseList.length ? failureCourseList : [],
           };
-          this.getData()
+          this.getData();
         }
       },
     },

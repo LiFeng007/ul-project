@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-11 10:46:41
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-22 10:50:27
+ * @LastEditTime: 2021-03-28 11:22:06
 -->
 <template>
   <div class="ul-peoject-detail-com">
@@ -23,7 +23,7 @@
         </li>
         <li>
           <span class="header">项目描述 :</span>
-          <span class="content">{{masterData.desc}}</span>
+          <span class="content" style="white-space: pre-line;">{{masterData.desc}}</span>
         </li>
         <li>
           <span class="header">项目积分 :</span>
