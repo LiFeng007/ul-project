@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-11 10:50:47
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-24 11:46:33
+ * @LastEditTime: 2021-03-29 23:01:20
 -->
 <template>
   <div class="ul-staff-detail-com">
@@ -61,7 +61,7 @@
             </li>
             <li>
               <span class="header">称号：</span>
-              <span class="content">{{baseData.highestFieldName}}</span>
+              <span class="content">{{baseData.highestFieldName | employeeTitle(baseData.highestFieldName , baseData.highestValue)}}</span>
             </li>
           </ul>
         </li>

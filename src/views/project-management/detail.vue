@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-11 10:46:41
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-28 11:22:06
+ * @LastEditTime: 2021-03-29 22:30:16
 -->
 <template>
   <div class="ul-peoject-detail-com">
@@ -20,6 +20,10 @@
         <li>
           <span class="header">项目名称 :</span>
           <span class="content">{{masterData.name}}</span>
+        </li>
+        <li>
+          <span class="header">项目owner :</span>
+          <span class="content">{{masterData.owner}}</span>
         </li>
         <li>
           <span class="header">项目描述 :</span>
@@ -64,9 +68,16 @@
 
     methods: {
       getDetail: async function () {
-        const res = await projectDetailByProjectId({ projectId: this.$route.query.projectId, });
+        const res = await projectDetailByProjectId({
+          projectId: this.$route.query.projectId,
+        });
         if (res.data.code == "E0") {
-          this.masterData = res.data.data;
+          let linkStr = res.data.data.desc
+          linkStr = linkStr.replace(/<link>/ig, '')
+          linkStr = linkStr.replace(/<\/link>/ig, '')
+          linkStr = linkStr.replace(/<\/br>/ig, '')
+          res.data.data.desc = linkStr
+          this.masterData = res.data.data
         }
       },
       href: function (url) {

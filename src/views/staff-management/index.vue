@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:29:27
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-28 10:44:28
+ * @LastEditTime: 2021-03-29 22:56:09
 -->
 <template>
   <div class="ul-staff-management">
@@ -50,6 +50,12 @@
         </el-table-column>
 
         <el-table-column prop="highestFieldName" label="称号" min-width="100">
+          
+          <template slot-scope="scope">
+            <span>
+              {{scope.row.highestFieldName | employeeTitle(scope.row.highestFieldName , scope.row.highestValue)}}
+            </span>
+          </template>
         </el-table-column>
 
         <el-table-column prop="point" label="当前积分" min-width="100" sortable="custom" :sort-orders="['ascending','descending']">
@@ -97,7 +103,7 @@
     <!-- ** -->
     <Ul-Confirm :confrimVisible="setStatusConfrimVisible" :message="setStatusConfirmMssage" @submit="setStatusConfrimSubmit" />
     <!-- ** -->
-    <Ul-Upload   :uploadLoading="uploadLoading" title="白名单导入" :uploadVisible="uploadVisible" :uploadTips="uploadTips" @upload="upload" />
+    <Ul-Upload :uploadLoading="uploadLoading" title="白名单导入" :uploadVisible="uploadVisible" :uploadTips="uploadTips" @upload="upload" />
   </div>
 </template>
 
@@ -165,7 +171,8 @@
        * */
       templateDown: async function () {
         const res = await templateDown();
-        res.data.code == "E0" && publicMethod.exportMethod(res.data.data.url, "白名单模板");
+        res.data.code == "E0" &&
+          publicMethod.exportMethod(res.data.data.url, "白名单模板");
       },
 
       /**
@@ -202,7 +209,7 @@
         const res = await templateUpload(fromData, {
           type: "multipart/form-data",
         });
-        this.uploadLoading = false  ;
+        this.uploadLoading = false;
         if (res.data.code == "E0") {
           const {
             total,

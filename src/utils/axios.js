@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-15 10:09:56
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-25 19:57:31
+ * @LastEditTime: 2021-03-29 10:06:06
  */
 import axios from 'axios'
 
@@ -16,7 +16,7 @@ import vm from '../main'
 import NProgress from 'nprogress'; // progress bar
 
 const DEV_BASE_URL = '/api'
-const PROD_BASE_URL = 'https://unilever-wechat.chiefadplus.cn/api/'
+const PROD_BASE_URL = 'https://dt-community.ulcampaign.com/api/'
 const BASE_URL = DEV_BASE_URL
 // 创建新的axios实例
 const service = axios.create({

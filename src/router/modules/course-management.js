@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 22:10:54
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-24 09:47:15
+ * @LastEditTime: 2021-03-29 15:44:15
  */
 
 import layout from '@/layout'
@@ -36,6 +36,13 @@ const courseManagement = {
       component: () => import('@/views/course-management/to-examine'),
       meta: {
         crmuns: [{ item: '课程管理', to: 'course-management' }, { item: '课程审核' }],
+      },
+    }, {
+      path: 'edit',
+      name: 'course-edit',
+      component: () => import('@/views/course-management/edit'),
+      meta: {
+        crmuns: [{ item: '课程管理', to: 'course-management' }, { item: '课程编辑' }],
       },
     }
   ]

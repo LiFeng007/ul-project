@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 22:57:55
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-28 11:21:48
+ * @LastEditTime: 2021-03-28 17:18:12
 -->
 <template>
   <div class="ul-course-detail-com">
@@ -78,6 +78,11 @@ export default {
     getCourseDetail:async function(){
       const res = await courseDetailByCourseId({courseId:this.$route.query.courseId})
       if(res.data.code == "E0"){
+          let linkStr = res.data.data.desc
+          linkStr = linkStr.replace(/<link>/ig, '')
+          linkStr = linkStr.replace(/<\/link>/ig, '')
+          linkStr = linkStr.replace(/<\/br>/ig, '')
+          res.data.data.desc = linkStr
           this.masterData = res.data.data
         }
 

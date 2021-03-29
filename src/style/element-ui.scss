@@ -15,6 +15,29 @@
   }
 }
 
+.el-button--default {
+  padding: 0 0.24rem;
+  height: 34px;
+  border-radius: 2px;
+  font-size: 13px;
+  font-weight: 400;
+  color: #ffffff;
+  color: #000;
+
+  &:hover,
+  &:focus {
+    background-color: #fff;
+    border-color: #DCDFE6;
+    color: #000;
+
+  }
+}
+
+.el-button--primary {
+  border: none !important;
+
+}
+
 .ul-nav-com {
 
   .el-input,
@@ -71,7 +94,9 @@
   font-size: 13px;
   font-weight: 400;
   color: #ffffff;
-  &:hover , &:focus {
+
+  &:hover,
+  &:focus {
     background-color: $routine;
   }
 }

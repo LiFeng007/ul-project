@@ -9,7 +9,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-12 14:04:31
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-28 11:27:43
+ * @LastEditTime: 2021-03-29 21:53:30
 -->
 <template>
   <div class="ul-upload" >
@@ -38,8 +38,9 @@
         <button :class="['default-btn']" @click="uploadVisible.state = false">
           取 消
         </button>
-        <button class="routine-btn" @click="upload">
-          {{uploadLoading ? '上传中...' : '确定'}}
+        <button v-if="!fileList.length" class="routine-btn">确 定</button>
+        <button v-else class="routine-btn" @click="upload">
+          {{uploadLoading ? '上传中...' : '确 定'}}
         </button>
       </span>
     </el-dialog>

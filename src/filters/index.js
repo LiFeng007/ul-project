@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-15 13:48:26
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-24 09:45:51
+ * @LastEditTime: 2021-03-29 22:59:06
  */
 export const filters = {
   /**
@@ -44,7 +44,7 @@ export const filters = {
    * @return {dataTime} 处理后时间
    */
   data(value, type) {
-    if(!value || value === null){
+    if (!value || value === null) {
       return value
     }
     var dataTime = "";
@@ -67,6 +67,44 @@ export const filters = {
     }
     return dataTime
 
+  },
+
+  /**
+   * @name: 员工称号处理
+   */
+  employeeTitle(data , highestFieldName, highestValue) {
+    if(highestValue != 0 && !highestFieldName){
+      return 
+    }
+    let head, tail;
+    switch (highestFieldName) {
+      case 'productManager':
+        head = '产品';
+        break;
+      case 'applicationDevelopment':
+        head = '开发';
+        break;
+      case 'scientificComputation':
+        head = '科学计算';
+        break;
+      case 'businessIntelligence':
+        head = 'BI';
+        break;
+      case 'machineLearning':
+        head = '机器学习';
+        break;
+      case 'dataEngineeringArchitect':
+        head = '数据';
+        break;
+      default:
+        break;
+    };
+    tail =  highestValue > 80
+      ? "宗师"
+      : highestValue > 40
+        ? "大侠"
+        : "学徒";
+    return head + tail
   },
 }
 

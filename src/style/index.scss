@@ -21,6 +21,7 @@
   }
 }
 
+
 /******/
 .ul-staff-management {
 
@@ -216,9 +217,82 @@
   }
 }
 
+/****编辑页面***/
+.course-edit-com,
+.project-edit-com,
+.staff-edit-com {
+
+  height: calc(100% - 82px);
+  padding: 0.06rem 0.16rem 0.16rem 0.16rem;
+
+  .edit-main {
+    background-color: #fff;
+    height: calc(100% - .88rem);
+    padding: .28rem;
+    overflow-y: auto;
+
+    .edit-nav {
+      height: 24px;
+      line-height: 24px;
+      padding-left: 0.12rem;
+      background: #f7f9fa;
+      border-radius: 2px;
+      font-size: 0.14rem;
+      font-weight: 500;
+      color: #67717a;
+      font-size: 14px !important;
+      margin-bottom: .32rem;
+    }
+
+    .el-form-item {
+      margin-bottom: 22px;
+      text-align: left;
+      padding: 0 30% 0 10%;
+
+      .el-form-item__label {
+        &:after {
+          content: "：";
+        }
+      }
+
+      .el-textarea__inner {
+        min-height: 80px !important;
+      }
+    }
+  }
+}
+
+/*****/
+.staff-edit-com {
+  .el-form-item {
+    padding: 0 30% 0 22% !important;
+  }
+  .el-upload-list{
+    display: none;
+  }
+  .image_url{
+    width: 100px;
+    height: 100px;
+  }
+  .hand-portrait{
+    .el-form-item__content{
+      display: flex;
+      align-items: flex-end;
+
+      .upload-demo{
+        height: 25px;
+        margin-left: 8px;
+      }
+    }
+  }
+}
+
+/******/
 .ul-staff-detail-com {
   .detail-main {
     margin-left: 15% !important;
+
+   
   }
 }
 

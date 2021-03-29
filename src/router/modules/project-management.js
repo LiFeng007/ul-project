@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-11 10:52:39
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-24 09:47:35
+ * @LastEditTime: 2021-03-29 15:45:05
  */
 import layout from '@/layout'
 
@@ -35,6 +35,13 @@ const projectManagement = {
       component: () => import('@/views/project-management/to-examine'),
       meta: {
         crmuns: [{ item: '项目管理', to: 'project-management' }, { item: '项目审核' }],
+      },
+    } , {
+      path: 'edit',
+      name: 'project-edit',
+      component: () => import('@/views/project-management/edit'),
+      meta: {
+        crmuns: [{ item: '项目管理', to: 'project-management' }, { item: '项目编辑' }],
       },
     }
   ]
