@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-01-28 10:53:53
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-27 15:24:43
+ * @LastEditTime: 2021-03-30 19:49:40
  */
 const path = require("path")
 
@@ -15,7 +15,7 @@ const isProduction = process.env.NODE_ENV === 'production'
 function resolve(dir) {
   return path.join(__dirname, dir);
 }
-
+const Timestamp = new Date().getTime();
 module.exports = {
   chainWebpack: config => {
     config.resolve.alias
@@ -46,6 +46,7 @@ module.exports = {
       // }]).end();
     }
   },
+    
   configureWebpack: {
     // 分片打包时将包与包之间相互引入的code单独打包
     optimization: {
@@ -55,6 +56,10 @@ module.exports = {
       runtimeChunk: {
         name: entrypoint => `runtime-${entrypoint.name}`
       }
+    },
+    output: { // 输出重构  打包编译后的 文件名称  【模块名称.版本号.时间戳】
+      filename: `[name].${Timestamp}.js`,
+      chunkFilename: `[name].${Timestamp}.js`
     },
   },
   pwa: {

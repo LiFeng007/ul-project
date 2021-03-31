@@ -6,7 +6,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-29 15:39:06
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-29 18:42:43
+ * @LastEditTime: 2021-03-31 19:38:42
 -->
 <template>
   <div class="project-edit-com">
@@ -23,16 +23,17 @@
           <el-input v-model="ruleForm.name" placeholder="请输入项目名称"></el-input>
         </el-form-item>
         <!-- ** -->
-        <el-form-item label="项目积分" prop="point">
-          <el-input v-model.number="ruleForm.point" placeholder="请输入项目积分" oninput="value=value.replace(/[^\d]/g,'')"></el-input>
+        <el-form-item label="项目积分" prop="rewardPoint">
+          <!-- <el-input v-model.number="ruleForm.rewardPoint" placeholder="请输入项目积分" oninput="value=value.replace(/[^\d]/g,'')"></el-input> -->
+          <span>{{ruleForm.rewardPoint}}</span>
         </el-form-item>
         <!-- ** -->
         <el-form-item label="上传人">
-          <span>钢铁侠</span>
+          <span>{{ruleForm.uploaderUserName}}</span>
         </el-form-item>
         <!-- ** -->
         <el-form-item label="上传时间">
-          <span>2021-03-29 16:27:00</span>
+          <span>{{ruleForm.createdAt | data('YMDHMS')}}</span>
         </el-form-item>
         <!-- nav-2 -->
         <div class="edit-nav">
@@ -40,8 +41,10 @@
         </div>
         <!-- ** -->
         <el-form-item label="项目描述">
-          <el-input type="textarea" :rows="2" placeholder="请输入项目描述" v-model="ruleForm.desc" maxlength="120" show-word-limit>
-          </el-input>
+          <!-- maxlength="120" show-word-limit -->
+          <!-- <el-input type="textarea" :rows="2" placeholder="请输入项目描述" v-model="ruleForm.desc">
+          </el-input> -->
+          <UlTinymce v-model="ruleForm.desc" />
         </el-form-item>
         <!-- ** -->
         <el-form-item>
@@ -55,34 +58,79 @@
 </template>
 
 <script>
+  import {
+    projectDetailByProjectId,
+    projectModfiyStatus,
+  } from "@/api/projectManagement";
+
+  import { publicMethod } from "@/utils/common";
+
+  import UlTinymce from "@/components/Tinymce";
+
   export default {
     name: "project-edit",
 
+    components: { UlTinymce },
+
     data() {
       return {
+        lodaing: false,
+
         ruleForm: {
           name: "",
-          point: "",
+          rewardPoint: "",
           desc: "",
         },
         rules: {
           name: [{ required: true, message: "请输入项目名称", trigger: "blur" }],
-          point: [{ required: true, message: "请输入项目积分", trigger: "blur" }],
+          rewardPoint: [
+            { required: true, message: "请输入项目积分", trigger: "blur" },
+          ],
         },
       };
     },
 
+    mounted() {
+      this.getCourseDetail();
+    },
+
     methods: {
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          console.log(valid, this.ruleForm);
+      /** 项目详情 **/
+      getCourseDetail: async function () {
+        const res = await projectDetailByProjectId({
+          projectId: this.$route.query.projectId,
         });
-      },
-      resetForm(formName) {
-        for (let key in this.ruleForm) {
-          this.ruleForm[key] = "";
+        if (res.data.code == "E0") {
+          let linkStr = res.data.data.desc;
+          linkStr = linkStr.replace(/<link>/gi, "");
+          linkStr = linkStr.replace(/<\/link>/gi, "");
+          linkStr = linkStr.replace(/<\/br>/gi, "");
+          res.data.data.desc = linkStr;
+          this.ruleForm = res.data.data;
+        } else {
+          this.$root.$tipsInfo("数据获取失败" + res.data.message, "error");
         }
       },
+      /** 提交修改 **/
+      submitForm: publicMethod.throttle(function (formName) {
+        this.$refs[formName].validate(async (valid) => {
+          this.lodaing = true;
+          if (!valid) {
+            return;
+          }
+          const res = await projectModfiyStatus(this.ruleForm);
+          this.lodaing = false;
+          if (res.data.code == "E0") {
+            this.$root.$tipsInfo("修改成功", "success");
+            this.$router.push({ name: "project-management" });
+          } else {
+            this.$root.$tipsInfo("修改失败 , " + res.data.message, "error");
+          }
+        });
+      }, 500),
+      resetForm: publicMethod.throttle(function () {
+        this.$router.push({ name: "project-management" });
+      }, 500),
     },
   };
 </script>

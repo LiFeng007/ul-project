@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-15 13:48:26
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-29 22:59:06
+ * @LastEditTime: 2021-03-30 17:32:57
  */
 export const filters = {
   /**
@@ -15,7 +15,17 @@ export const filters = {
   status(status, sucessStr, fileStr) {
     if (status == 1) {
       return sucessStr;
-    } else if (status == 2 || status == 0) {
+    } else if (status == 2) {
+      return fileStr;
+    } else {
+      return status;
+    }
+  },
+  // 员工状态
+  staffStatus(status, sucessStr, fileStr) {
+    if (status == 1) {
+      return sucessStr;
+    } else if (status == 0) {
       return fileStr;
     } else {
       return status;
@@ -63,7 +73,6 @@ export const filters = {
       dataTime = hour + ":" + minute + ":" + second;
     } else if (type == "YM") {
       dataTime = year + "-" + month;
-
     }
     return dataTime
 
@@ -73,7 +82,7 @@ export const filters = {
    * @name: 员工称号处理
    */
   employeeTitle(data , highestFieldName, highestValue) {
-    if(highestValue != 0 && !highestFieldName){
+    if(!highestFieldName || !highestValue && highestValue !== 0 ){
       return 
     }
     let head, tail;

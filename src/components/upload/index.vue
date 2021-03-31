@@ -9,13 +9,13 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-12 14:04:31
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-29 21:53:30
+ * @LastEditTime: 2021-03-31 14:54:59
 -->
 <template>
-  <div class="ul-upload" >
+  <div class="ul-upload">
     <el-dialog :visible.sync="uploadVisible.state" :title="title">
       <div class="ul-upload-main">
-        <el-upload ref="uploadMutiple" class="upload-demo" :auto-upload="false" action="Fake Action" :on-preview="handlePreview" :on-remove="handleRemove" :on-change="handleChange" :limit="1" accept=".xlsx,.xls" :on-exceed="handleExceed" :file-list="fileList" multiple>
+        <el-upload ref="uploadMutiple" class="upload-demo" :auto-upload="false" action="Fake Action"  :on-remove="handleRemove" :on-change="handleChange" :limit="1" accept=".xlsx,.xls" :on-exceed="handleExceed" :file-list="fileList" multiple>
           <div>
             <div><i :style="{ color: '#F25B8E' }">*</i> 文件:</div>
             <el-button size="small" icon="el-icon-upload" v-if="!fileList.length">点击上传</el-button>
@@ -62,11 +62,11 @@
         type: String,
         required: true,
       },
-      uploadLoading:{
+      uploadLoading: {
         // 上传状态
-        type:Boolean ,
-        required:true
-      } , 
+        type: Boolean,
+        required: true,
+      },
       uploadTips: {
         /**
          * {Object}
@@ -91,10 +91,13 @@
         this.fileList = [];
         this.$parent.uploadTips = {};
       },
-      handlePreview(file) {
-      },
       upload() {
-        this.$emit("upload", this.fileList[0]);
+        // 判断是不是第二次点确定 如果是的话需要关闭弹窗
+        if (this.uploadTips.type) {
+          this.uploadVisible.state = false
+        } else {
+          this.$emit("upload", this.fileList[0]);
+        }
       },
       handleExceed(files, fileList) {
         this.$message.warning(
@@ -127,7 +130,7 @@
       },
     },
     beforeDestroy() {
-      this.handleRemove()
+      this.handleRemove();
     },
     watch: {
       uploadTips: {
@@ -148,13 +151,12 @@
         deep: true,
       },
 
-
-     uploadVisible: {
-        handler(newVal){
-          !newVal.state && this.handleRemove()
-        } ,
-        deep:true
-      }
+      uploadVisible: {
+        handler(newVal) {
+          !newVal.state && this.handleRemove();
+        },
+        deep: true,
+      },
     },
   };
 </script>

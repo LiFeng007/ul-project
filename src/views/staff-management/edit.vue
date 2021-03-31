@@ -21,7 +21,7 @@
         <!-- ** -->
         <el-form-item label="头像" class="hand-portrait">
           <img :src="ruleForm.imageUrl" alt="头像" class="image_url">
-          <el-upload ref="upload" class="upload-demo" :auto-upload="false" action="Fake Action" :on-change="handleChange" :on-preview="handlePreview" :on-remove="handleRemove" :limit="1" :file-list="fileList" multiple list-type="picture" >
+          <el-upload ref="upload" class="upload-demo" :auto-upload="false" action="Fake Action" :on-change="handleChange" :on-preview="handlePreview" :on-remove="handleRemove" :limit="1" :file-list="fileList" multiple list-type="picture">
             <a href="javascript:;" @click="clearFileList">更换头像</a>
           </el-upload>
         </el-form-item>
@@ -74,11 +74,19 @@
 </template>
 
 <script>
+  import {
+    courseDetailByCourseId,
+    courseModfiyStatus,
+  } from "@/api/courseManagement";
+
+  import { publicMethod } from "@/utils/common";
+
   export default {
     name: "staff-edit",
 
     data() {
       return {
+        lodaing: false,
         ruleForm: {
           imageUrl:
             "https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKbeVUCFnqVWZ75lRnxXFInk6HdicT5MLLSrn0zKZftDezGe2ehNYnGcjAwnhJBVAy4SfnY59XIVBA/132",
@@ -103,12 +111,12 @@
         console.log(file);
       },
       // 点击上传的时候清空文件列表
-      clearFileList(){
-        this.$refs.upload.clearFiles()
-      } , 
+      clearFileList() {
+        this.$refs.upload.clearFiles();
+      },
       // 上传成功
       handleChange(file, fileList) {
-        console.log(111)
+        console.log(111);
         this.fileList = fileList;
         this.ruleForm.imageUrl = fileList[0].url;
       },

@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-18 10:44:20
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-25 22:22:07
+ * @LastEditTime: 2021-03-31 15:12:39
 -->
 <template>
   <div class="login-container">
@@ -88,7 +88,7 @@
                   );
                 }
               })
-              .catch((_) => (this.isLogin = false));
+              .catch(() => (this.isLogin = false));
           }
         });
       },

@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 14:50:11
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-20 15:56:21
+ * @LastEditTime: 2021-03-31 10:40:43
  */
 
 import Vue from 'vue'
@@ -60,7 +60,7 @@ export const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  document.title = to.meta.crmuns[0].item
+  document.title = to.meta.crmuns[0].item;
   NProgress.start();
   if (/login/.test(to.path)) {
     next()

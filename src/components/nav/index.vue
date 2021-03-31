@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-11 16:17:29
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-18 18:56:09
+ * @LastEditTime: 2021-03-31 14:33:31
 -->
 <template>
   <div class="ul-nav-com">
@@ -15,7 +15,7 @@
     </div>
     <!--  -->
     <div class="ul-nav-right">
-      <el-input size="medium" placeholder="搜索" prefix-icon="el-icon-search" clearable @keyup.enter.native="handler()" v-model="input">
+      <el-input size="medium" placeholder="搜索" prefix-icon="el-icon-search" clearable @keyup.enter.native="handler" @input.native="handler" v-model="input">
       </el-input>
     </div>
   </div>
@@ -40,5 +40,11 @@
         Bus.$emit("setPage", { pageNumber: 1, pageSize: 10 });
       }, 500),
     },
+
+    watch:{
+      input(newVal){
+        !newVal  && this.handler()
+      }
+    }
   };
 </script>

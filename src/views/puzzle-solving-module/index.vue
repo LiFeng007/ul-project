@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:28:38
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-28 10:40:35
+ * @LastEditTime: 2021-03-30 16:14:09
 -->
 <template>
   <div class="ul-puzzle-solving">
@@ -28,6 +28,11 @@
         </el-table-column>
 
         <el-table-column prop="name" label="员工姓名" min-width="100">
+            <template slot-scope="scope">
+            <span @click="$router.push({ name: 'staff-detail', query: { staffId: scope.row.userId } })" :style="{ marginRight: '8px' }" class="cursor-porinter">
+              {{scope.row.name}}
+            </span>
+          </template>
         </el-table-column>
 
         <el-table-column prop="rewardPoint" label="获得积分" min-width="120" sortable>

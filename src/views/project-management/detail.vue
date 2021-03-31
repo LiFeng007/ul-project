@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-11 10:46:41
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-29 22:30:16
+ * @LastEditTime: 2021-03-31 19:44:51
 -->
 <template>
   <div class="ul-peoject-detail-com">
@@ -27,7 +27,7 @@
         </li>
         <li>
           <span class="header">项目描述 :</span>
-          <span class="content" style="white-space: pre-line;">{{masterData.desc}}</span>
+          <span  v-html="masterData.desc" class="content" style="white-space: pre-line;">{{masterData.desc}}</span>
         </li>
         <li>
           <span class="header">项目积分 :</span>
@@ -39,12 +39,12 @@
         </li>
         <li>
           <span class="header">上传时间 :</span>
-          <span class="content">{{masterData.createdAt}}</span>
+          <span class="content">{{masterData.createdAt | data('YMDHMS')}}</span>
         </li>
-        <li>
+        <!-- <li>
           <span class="header">跳转链接 :</span>
           <span class="content cursor-porinter" :style="{color:'#2ABFFF'}" @click="href(masterData.linkUrl)">{{masterData.linkUrl}}</span>
-        </li>
+        </li> -->
 
       </ul>
     </div>

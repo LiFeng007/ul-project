@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-11 10:47:32
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-25 14:33:53
+ * @LastEditTime: 2021-03-31 10:18:34
 -->
 <template>
   <div class="ul-project-to-examine">
@@ -27,6 +27,11 @@
         </el-table-column>
 
         <el-table-column prop="name" label="姓名" min-width="100">
+          <template slot-scope="scope">
+            <span @click="$router.push({ name: 'staff-detail', query: { staffId: scope.row.userId } })" class="cursor-porinter">
+              {{scope.row.name}}
+            </span>
+          </template>
         </el-table-column>
 
         <el-table-column prop="imageUrl" label="上传截图" min-width="80">

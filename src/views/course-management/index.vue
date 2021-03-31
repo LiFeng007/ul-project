@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:26:46
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-28 11:15:26
+ * @LastEditTime: 2021-03-31 15:21:56
 -->
 <template>
   <div class="ul-course-management">
@@ -35,10 +35,10 @@
         <el-table-column prop="rewardPoint" label="课程积分" min-width="100" sortable="custom" :sort-orders="['ascending','descending']">
         </el-table-column>
 
-        <el-table-column prop="linkUrl" label="跳转链接"  min-width="100">
+        <el-table-column prop="linkUrl" label="跳转链接" min-width="100">
           <template slot-scope="scope">
             <el-image :src="scope.row.linkUrl" style="width:49px !important;height:48px !important;" :preview-src-list="[scope.row.linkUrl]">
-              <div v-if="!scope.row.linkUrl" slot="error" style="line-height:55px"  class="image-slot">
+              <div v-if="!scope.row.linkUrl" slot="error" style="line-height:55px" class="image-slot">
                 无链接
               </div>
             </el-image>
@@ -69,17 +69,17 @@
         </el-table-column>
 
         <el-table-column align="center" fixed="right" label="状态" min-width="100" :filters="[
-        { text: '已下线', value: 0 }, 
+        { text: '已下线', value: 2 }, 
         { text: '已上线', value: 1 },
         ]">
           <template slot-scope="scope">
-            <span :class="[scope.row.status && scope.row.status !== 2 ? 'success': 'rejected' ]">
+            <span :class="[scope.row.status == 1 ? 'success': 'rejected' ]">
               {{scope.row.status | status('已上线' , '已下线')}}
             </span>
           </template>
         </el-table-column>
 
-        <el-table-column align="center" fixed="right" label="操作" min-width="130">
+        <el-table-column align="center" fixed="right" label="操作" min-width="150">
           <template slot-scope="scope">
 
             <span @click="$router.push({ name: 'course-detail', query: { courseId: scope.row.courseId } })" :style="{ marginRight: '8px' }" class="cursor-porinter">
@@ -90,9 +90,14 @@
               审核
             </span>
 
-            <span :style="{ marginRight: '8px' }" class="cursor-porinter" @click="del(scope.row.status ? false : true, scope.row)">
+            <span :style="{ marginRight: '8px' }" class="cursor-porinter" @click="del(scope.row.status == 2 ? true : false, scope.row)">
               {{scope.row.status | status('下线' , '上线')}}
             </span>
+
+            <span @click="$router.push({ name: 'course-edit', query: { courseId: scope.row.courseId } })" class="cursor-porinter">
+              编辑
+            </span>
+
           </template>
         </el-table-column>
       </el-table>
@@ -188,12 +193,14 @@
       setStatusConfrimSubmit: async function () {
         const res = await courseModfiyStatus({
           courseId: this.delDate.courseId,
-          status: this.delDate.status ? 2 : 1,
+          status: this.delDate.status == 2 ? 1 : 2,
         });
         if (res.data.code == "E0") {
-          this.delDate.status
-            ? (this.delDate.status = 0)
-            : (this.delDate.status = 1);
+          this.delDate.status = res.data.data.status;
+          // res.data.data.status == 2
+          //   ? (this.delDate.status = 2)
+          //   : (this.delDate.status = 1);
+          this.$root.$tipsInfo(`操作成功`, "success");
         } else {
           this.$root.$tipsInfo(
             `操作失败 , 失败原因:${res.data.message}`,

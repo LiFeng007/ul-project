@@ -33,12 +33,23 @@
 
 /*****/
 .ul-project-to-examine {
+  .el-table {
 
-  .el-image,
-  img {
-    width: 40px !important;
-    height: 52px !important;
+    .el-image,
+    img {
+      width: 40px !important;
+      height: 52px !important;
+    }
   }
+
+}
+
+.ul-project-management,
+.ul-puzzle-solving {
+  .el-table td {
+    padding: 16px 0;
+  }
+
 }
 
 /* table表格样式 */
@@ -70,13 +81,7 @@
       color: $routine;
       line-height: 20px;
     }
-
-
-
-
-
   }
-
 
   .ul-page {
     display: flex;
@@ -110,6 +115,10 @@
       }
     }
 
+    .el-image {
+      width: 36px;
+      height: 52px;
+    }
 
     .cursor-porinter {
       font-weight: 400;
@@ -159,8 +168,8 @@
     }
 
     .detail-main {
+      margin: 0 15%;
       margin-top: 36px;
-      margin-left: 20%;
 
       li {
         margin-bottom: 0.24rem;
@@ -267,19 +276,22 @@
   .el-form-item {
     padding: 0 30% 0 22% !important;
   }
-  .el-upload-list{
+
+  .el-upload-list {
     display: none;
   }
-  .image_url{
+
+  .image_url {
     width: 100px;
     height: 100px;
   }
-  .hand-portrait{
-    .el-form-item__content{
+
+  .hand-portrait {
+    .el-form-item__content {
       display: flex;
       align-items: flex-end;
 
-      .upload-demo{
+      .upload-demo {
         height: 25px;
         margin-left: 8px;
       }
@@ -292,7 +304,7 @@
   .detail-main {
     margin-left: 15% !important;
 
-   
+
   }
 }
 

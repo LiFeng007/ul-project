@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-15 10:09:56
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-29 10:06:06
+ * @LastEditTime: 2021-03-30 19:59:25
  */
 import axios from 'axios'
 
@@ -21,7 +21,7 @@ const BASE_URL = DEV_BASE_URL
 // 创建新的axios实例
 const service = axios.create({
   baseURL: BASE_URL,
-  timeout: 3 * 1000
+  // timeout: 3 * 1000
 })
 
 // 请求拦截器
@@ -101,17 +101,17 @@ service.interceptors.response.use(response => {
         error.message = 'http版本不支持该请求'
         break;
       default:
-        error.message = `连接错误${error.response.status}`
+        error.message = `请求错误`
     }
   } else {
     // 超时处理
-    if (JSON.stringify(error).includes('timeout')) {
-      Message.error('服务器响应超时，请刷新当前页')
-    }
-    error.message('连接服务器失败')
+    // if (JSON.stringify(error).includes('timeout')) {
+    //   Message.error('服务器响应超时，请刷新当前页')
+    // }
+    // error.message('连接服务器失败')
   }
 
-  Message.error(error.message)
+  // Message.error(error.message)
   /***** 处理结束 *****/
   return Promise.resolve(error.response)
 })

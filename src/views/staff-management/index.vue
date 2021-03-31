@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:29:27
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-29 22:56:09
+ * @LastEditTime: 2021-03-31 12:50:55
 -->
 <template>
   <div class="ul-staff-management">
@@ -50,7 +50,7 @@
         </el-table-column>
 
         <el-table-column prop="highestFieldName" label="称号" min-width="100">
-          
+
           <template slot-scope="scope">
             <span>
               {{scope.row.highestFieldName | employeeTitle(scope.row.highestFieldName , scope.row.highestValue)}}
@@ -67,18 +67,15 @@
         <el-table-column prop="projectNum" label="完成项目数" min-width="120" sortable="custom" :sort-orders="['ascending','descending']">
         </el-table-column>
 
-        <el-table-column align="center" fixed="right" label="状态" min-width="100" :filters="[
-        { text: '已启用', value: 1 }, 
-        { text: '已禁用', value: 0 },
-        ]">
+        <el-table-column align="center" fixed="right" label="状态" min-width="100" >
           <template slot-scope="scope">
             <span :class="[scope.row.status ? 'success': 'rejected' ]">
-              {{scope.row.status | status('已启用' , '已禁用')}}
+              {{scope.row.status | staffStatus('已启用' , '已禁用')}}
             </span>
           </template>
         </el-table-column>
 
-        <el-table-column align="center" fixed="right" label="操作" min-width="130">
+        <el-table-column align="center" fixed="right" label="操作" min-width="170">
           <template slot-scope="scope">
 
             <span @click=" scope.row.userId && $router.push({ name: 'staff-detail', query: { staffId: scope.row.userId } })" :style="{ marginRight: '8px' }" :class="[ 'cursor-porinter' , scope.row.userId ? 'cursor-porinter':'no-handle'  ]">
@@ -86,12 +83,16 @@
             </span>
 
             <span @click="handlerCourse(scope.row.status ? true : false , scope.row)" :style="{ marginRight: '8px' }" class="cursor-porinter">
-              {{scope.row.status | status('禁用' , '启用')}}
+              {{scope.row.status | staffStatus('禁用' , '启用')}}
             </span>
 
             <span :style="{ marginRight: '8px' }" class="cursor-porinter" @click="del(scope.row)">
               删除
             </span>
+
+            <!-- <span @click="$router.push({ name: 'staff-edit', query: { permissionId: scope.row.id } })" class="cursor-porinter">
+              编辑
+            </span> -->
           </template>
         </el-table-column>
       </el-table>
@@ -198,6 +199,7 @@
           );
         }
         this.confrimVisible.state = false;
+        this.getData();
       },
       /**
        * 确定上传
