@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-01-28 10:53:53
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-30 19:49:40
+ * @LastEditTime: 2021-04-01 20:02:18
  */
 const path = require("path")
 
@@ -57,10 +57,10 @@ module.exports = {
         name: entrypoint => `runtime-${entrypoint.name}`
       }
     },
-    output: { // 输出重构  打包编译后的 文件名称  【模块名称.版本号.时间戳】
-      filename: `[name].${Timestamp}.js`,
-      chunkFilename: `[name].${Timestamp}.js`
-    },
+    // output: { // 输出重构  打包编译后的 文件名称  【模块名称.版本号.时间戳】
+    //   filename: `[name].${Timestamp}.js`,
+    //   chunkFilename: `[name].${Timestamp}.js`
+    // },
   },
   pwa: {
     iconPaths: {
@@ -86,9 +86,11 @@ module.exports = {
       errors: false,
     },
     port: 8080,
+    // http://161.189.10.112:8333/api
+    // https://unilever-wechat.chiefadplus.cn/api
     proxy: {
       '/api': {     
-        target: 'https://unilever-wechat.chiefadplus.cn/api',  
+        target: 'http://161.189.10.112:8333/api',  
         ws: false,        //如果要代理 websockets，配置这个参数
         secure: false,  // 如果是https接口，需要配置这个参数
         changeOrigin: true,  //是否跨域

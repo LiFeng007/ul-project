@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:29:27
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-31 12:50:55
+ * @LastEditTime: 2021-04-01 16:24:35
 -->
 <template>
   <div class="ul-staff-management">
@@ -75,7 +75,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column align="center" fixed="right" label="操作" min-width="170">
+        <el-table-column align="center" fixed="right" label="操作" min-width="180">
           <template slot-scope="scope">
 
             <span @click=" scope.row.userId && $router.push({ name: 'staff-detail', query: { staffId: scope.row.userId } })" :style="{ marginRight: '8px' }" :class="[ 'cursor-porinter' , scope.row.userId ? 'cursor-porinter':'no-handle'  ]">
@@ -90,9 +90,9 @@
               删除
             </span>
 
-            <!-- <span @click="$router.push({ name: 'staff-edit', query: { permissionId: scope.row.id } })" class="cursor-porinter">
+            <span @click=" scope.row.userId && $router.push({ name: 'staff-edit', query: { staffId: scope.row.userId } })"  :class="[ 'cursor-porinter' , scope.row.userId ? 'cursor-porinter':'no-handle'  ]">
               编辑
-            </span> -->
+            </span>
           </template>
         </el-table-column>
       </el-table>

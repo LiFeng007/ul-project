@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-29 15:39:06
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-31 15:48:26
+ * @LastEditTime: 2021-04-01 19:07:39
 -->
 <template>
   <div class="course-edit-com">
@@ -22,7 +22,7 @@
           <el-input v-model="ruleForm.name" placeholder="请输入课程名称"></el-input>
         </el-form-item>
         <!-- ** -->
-        <el-form-item label="课程积分" prop="rewardPoint">
+        <el-form-item label="课程积分">
           <!-- <el-input v-model.number="ruleForm.rewardPoint" placeholder="请输入课程积分" oninput="value=value.replace(/[^\d]/g,'')"></el-input> -->
           <span>{{ruleForm.rewardPoint}}</span>
         </el-form-item>

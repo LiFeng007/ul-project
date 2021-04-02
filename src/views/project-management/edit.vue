@@ -6,7 +6,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-29 15:39:06
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-31 19:38:42
+ * @LastEditTime: 2021-04-01 11:56:13
 -->
 <template>
   <div class="project-edit-com">
@@ -23,7 +23,7 @@
           <el-input v-model="ruleForm.name" placeholder="请输入项目名称"></el-input>
         </el-form-item>
         <!-- ** -->
-        <el-form-item label="项目积分" prop="rewardPoint">
+        <el-form-item label="项目积分">
           <!-- <el-input v-model.number="ruleForm.rewardPoint" placeholder="请输入项目积分" oninput="value=value.replace(/[^\d]/g,'')"></el-input> -->
           <span>{{ruleForm.rewardPoint}}</span>
         </el-form-item>
@@ -48,7 +48,7 @@
         </el-form-item>
         <!-- ** -->
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
+          <el-button type="primary" @click="submitForm('ruleForm')">{{lodaing ? '保存中...' : '保存'}}</el-button>
           <el-button @click="resetForm('ruleForm')">取消</el-button>
         </el-form-item>
       </el-form>

@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:26:46
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-31 15:21:56
+ * @LastEditTime: 2021-04-01 16:24:27
 -->
 <template>
   <div class="ul-course-management">
@@ -79,7 +79,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column align="center" fixed="right" label="操作" min-width="150">
+        <el-table-column align="center" fixed="right" label="操作" min-width="180">
           <template slot-scope="scope">
 
             <span @click="$router.push({ name: 'course-detail', query: { courseId: scope.row.courseId } })" :style="{ marginRight: '8px' }" class="cursor-porinter">

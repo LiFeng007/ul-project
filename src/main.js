@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 14:50:11
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-19 14:40:42
+ * @LastEditTime: 2021-04-01 19:07:19
  */
 import Vue from 'vue'
 
@@ -21,7 +21,7 @@ import {filters} from './filters' // global filters
 
 import 'element-ui/lib/theme-chalk/index.css'
 
-import './registerServiceWorker'
+// import './registerServiceWorker'
 
 import '@/style/index.scss'
 

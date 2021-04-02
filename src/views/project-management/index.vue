@@ -5,7 +5,7 @@
  * @email: fenglee9794@gmail.com
  * @Date: 2021-03-10 20:27:53
  * @LastEditors: Fred
- * @LastEditTime: 2021-03-31 19:16:03
+ * @LastEditTime: 2021-04-01 16:24:11
 -->
 <template>
   <div class="ul-project-management">
@@ -67,7 +67,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column align="center" fixed="right" label="操作" min-width="150">
+        <el-table-column align="center" fixed="right" label="操作" min-width="180">
           <template slot-scope="scope">
 
             <span @click="$router.push({ name: 'project-detail', query: { projectId: scope.row.projectId } })" :style="{ marginRight: '8px' }" class="cursor-porinter">
